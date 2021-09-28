@@ -9,16 +9,15 @@ const fs = require('fs');
 
 let config = {
     "prefix": "",
-    "CanalBienvenida": "",
-    "idInformacion": "",
-    "idReglas": "",
+    "welcomeChannel": "",
+    "welcomeMsg":"",
     "maxDeleting": 0,
-    "logobot": "",
-    "nombrebot": "",
-    "color": "",
+    "botLogo": "",
+    "botName": "",
     "leivaaLogo": "",
+    "color": "",
     "colors": {}
-}
+  }
 
 
 function readConfig() {
@@ -40,8 +39,6 @@ readConfig();
 DiscordBot.login(process.env.discord_token)
 DiscordBot.on('ready', () => {
     console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ]' + '\x1b[32m is logged in\x1b[0m');
-
-
 });
 
 DiscordBot.commands = new Discord.Collection();
@@ -55,7 +52,14 @@ for (const file of CommandFiles) {
 }
 console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ] ' + '\x1b[33m' + countCommands +'\x1b[0m commands founded and loaded.');
 
+
+DiscordBot.on('guildMemberAdd', async(member) =>{
+    DiscordBot.commands.get('welcome').execute(member, config, Discord);
+})
+
+
 DiscordBot.on('message', async(message) => {
+    console.log("this is the welcome channel" + config.welcomeChannel);
     console.log(message.author.username + ": " + message.content);
     if (message.content.startsWith(config.prefix)) {
 
@@ -88,19 +92,17 @@ DiscordBot.on('message', async(message) => {
             if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return message.reply(`No tienes permisos suficientes para borrar mensajes.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
             DiscordBot.commands.get('clear').execute(message, args, config);
         }
-        if (command === 'reactionrole') {
-            if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
-            DiscordBot.commands.get('reactionrole').execute(message, config, Discord, DiscordBot);
-        }
         if (command === 'config') {
             if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
             
+            if( args[0] == 'loadDefaults' )return DiscordBot.commands.get('loadDefaults').execute(message, args, config, readConfig);
+
             if( args[0] == 'prefix' )return DiscordBot.commands.get('prefix').execute(message, args, config, readConfig);
             if( args[0] == 'colors' )return DiscordBot.commands.get('colors').execute(message, args, config, Discord);
             if( args[0] == 'setColor' )return DiscordBot.commands.get('setColor').execute(message, args, config, readConfig);
+            if( args[0] == 'setWChannel' )return DiscordBot.commands.get('setColor').execute(message, args, config, readConfig);
             return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
         }
     }
 })
 
-DiscordBot.commands.get('welcome').execute(config, DiscordBot, Discord);

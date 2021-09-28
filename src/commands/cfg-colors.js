@@ -5,7 +5,7 @@ module.exports = {
         if(args[1]!=undefined) return message.channel.send(`Use ${config.prefix}config colors to run this command correctly`);
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
-            .setAuthor(config.nombrebot,config.logobot)
+            .setAuthor(config.botName,config.botLogo)
             .setTitle(`LeivaaDiscordJS Colors:`)
             .addFields(
                 {name: `WHITE`, value: `#FFFFFF`},

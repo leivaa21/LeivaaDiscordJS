@@ -5,7 +5,7 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
-            .setAuthor(config.nombrebot,config.logobot)
+            .setAuthor(config.botName,config.botLogo)
             .setTitle(`LeivaaDiscordJS Commands:`)
             .addFields(
                 { name: `${config.prefix}ping`, value: `> Just response 🏓 pong! \n > *Usage*: ${ config.prefix }ping.`},
