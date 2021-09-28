@@ -10,9 +10,11 @@ module.exports = {
             .addFields(
                 { name: `${config.prefix}config loadDefaults`, value: `> ${DiscordBot.commands.get('loadDefaults').description}\n > *Usage*: ${config.prefix}config loadDefaults`},
                 { name: `${config.prefix}config prefix`, value: `> ${DiscordBot.commands.get('prefix').description}\n > *Usage*: ${config.prefix}config prefix {new_prefix}`},
+                { name: `${config.prefix}config maxDeleting`, value: `> ${DiscordBot.commands.get('maxDeleting').description}\n > *Usage*: ${config.prefix}config maxDeleting {new_max}`},
                 { name: `${config.prefix}config colors`, value: `> ${DiscordBot.commands.get('colors').description}\n > *Usage*: ${config.prefix}config colors`},
-                { name: `${config.prefix}config setColor`, value: `> ${DiscordBot.commands.get('prefix').description}\n > *Usage*: ${config.prefix}config setColor {new_color}`},
-                { name: `${config.prefix}config setWChannel`, value: `> ${DiscordBot.commands.get('setWChannel').description}\n > *Usage*: ${config.prefix}config setWChannel {new_channel}`},
+                { name: `${config.prefix}config color`, value: `> ${DiscordBot.commands.get('color').description}\n > *Usage*: ${config.prefix}config color {new_color}`},
+                { name: `${config.prefix}config welcomeChannel`, value: `> ${DiscordBot.commands.get('welcomeChannel').description}\n > *Usage*: ${config.prefix}config welcomeChannel {new_channel}`},
+                { name: `${config.prefix}config welcomeMsg`, value: `> ${DiscordBot.commands.get('welcomeMsg').description}\n > *Usage*: ${config.prefix}config welcomeMsg {new_msg}`},
             )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 

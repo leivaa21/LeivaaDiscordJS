@@ -9,8 +9,8 @@
     "run": "node src/index.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Leivaa21",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.1",
     "esm": "^3.2.25",

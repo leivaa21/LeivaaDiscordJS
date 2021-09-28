@@ -25,7 +25,12 @@ function readConfig() {
         if(err) return console.log(err); 
         try{
             config = JSON.parse(jsonString); 
-            console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ] ACTUAL CONFIG\n\x1b[36m| >\x1b[0m Prefix = "+config.prefix+"\n\x1b[36m| >\x1b[0m MaxDeleting = "+config.maxDeleting);
+            console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ] ACTUAL CONFIG\n"
+                +"\x1b[36m| >\x1b[0m Prefix = "+config.prefix+"\n"
+                +"\x1b[36m| >\x1b[0m MaxDeleting = "+config.maxDeleting+"\n"
+                +"\x1b[36m| >\x1b[0m welcomeChannel = "+config.welcomeChannel+"\n"
+                +"\x1b[36m| >\x1b[0m welcomeMsg = "+config.welcomeMsg+"\n"
+                +"\x1b[36m| >\x1b[0m Color = "+config.color);
         } catch(err) {
             console.log('[ERROR] Parsing JSON failed! ', err)
         }
@@ -59,7 +64,6 @@ DiscordBot.on('guildMemberAdd', async(member) =>{
 
 
 DiscordBot.on('message', async(message) => {
-    console.log("this is the welcome channel" + config.welcomeChannel);
     console.log(message.author.username + ": " + message.content);
     if (message.content.startsWith(config.prefix)) {
 
@@ -98,9 +102,12 @@ DiscordBot.on('message', async(message) => {
             if( args[0] == 'loadDefaults' )return DiscordBot.commands.get('loadDefaults').execute(message, args, config, readConfig);
 
             if( args[0] == 'prefix' )return DiscordBot.commands.get('prefix').execute(message, args, config, readConfig);
+            if( args[0] == 'maxDeleting' )return DiscordBot.commands.get('maxDeleting').execute(message, args, config, readConfig);
             if( args[0] == 'colors' )return DiscordBot.commands.get('colors').execute(message, args, config, Discord);
-            if( args[0] == 'setColor' )return DiscordBot.commands.get('setColor').execute(message, args, config, readConfig);
-            if( args[0] == 'setWChannel' )return DiscordBot.commands.get('setColor').execute(message, args, config, readConfig);
+            if( args[0] == 'color' )return DiscordBot.commands.get('color').execute(message, args, config, readConfig);
+            if( args[0] == 'welcomeChannel' )return DiscordBot.commands.get('welcomeChannel').execute(message, args, config, readConfig);
+            if( args[0] == 'welcomeMsg' )return DiscordBot.commands.get('welcomeMsg').execute(message, args, config, readConfig);
+
             return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
         }
     }
