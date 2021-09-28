@@ -1,0 +1,23 @@
+{
+  "prefix": "!",
+  "CanalBienvenida": "🎉-𝘉𝘪𝘦𝘯𝘷𝘦𝘯𝘪𝘥𝘢-🎉",
+  "idInformacion": "794650618865516565",
+  "idReglas": "794647489105362975",
+  "maxDeleting": 20,
+  "logobot": "https://i.imgur.com/sNCtn86.png",
+  "nombrebot": "leivaaStdio",
+  "color": "#E74C3C",
+  "leivaaLogo": "https://i.imgur.com/dZWwv1R.png",
+  "colors": {
+    "WHITE": "#FFFFFF",
+    "AQUA": "#1ABC9C",
+    "PINK": "#E91E63",
+    "GREEN": "#2ECC71",
+    "GOLD": "#F1C40F",
+    "BLUE": "#3498DB",
+    "ORANGE": "#E67E22",
+    "PURPLE": "#9B59B6",
+    "RED": "#E74C3C",
+    "YELLOW": "#FFFF00"
+  }
+}

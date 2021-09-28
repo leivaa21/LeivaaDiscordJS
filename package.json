@@ -1,0 +1,24 @@
+{
+  "name": "leivaastdio",
+  "version": "1.0.1",
+  "description": "This is a bot developed for administrate a discord server. Made while learning about JS and some libraries. By Leivaa",
+  "main": "src/index.js",
+  "scripts": {
+    "start":"nodemon -e src/index",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "esm": "^3.2.25",
+    "fs": "0.0.1-security",
+    "nodemon": "^2.0.13",
+    "replace-json-property": "^1.7.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
