@@ -30,7 +30,7 @@ function readConfig() {
                 +"\x1b[36m| >\x1b[0m MaxDeleting = "+config.maxDeleting+"\n"
                 +"\x1b[36m| >\x1b[0m welcomeChannel = "+config.welcomeChannel+"\n"
                 +"\x1b[36m| >\x1b[0m welcomeMsg = "+config.welcomeMsg+"\n"
-                +"\x1b[36m| >\x1b[0m Color = "+config.color);
+                +"\x1b[36m| >\x1b[0m color = "+config.color);
         } catch(err) {
             console.log('[ERROR] Parsing JSON failed! ', err)
         }
@@ -107,7 +107,7 @@ DiscordBot.on('message', async(message) => {
             if( args[0] == 'color' )return DiscordBot.commands.get('color').execute(message, args, config, readConfig);
             if( args[0] == 'welcomeChannel' )return DiscordBot.commands.get('welcomeChannel').execute(message, args, config, readConfig);
             if( args[0] == 'welcomeMsg' )return DiscordBot.commands.get('welcomeMsg').execute(message, args, config, readConfig);
-
+            if( args[0] == 'display' )return DiscordBot.commands.get('cfg-display').execute(message, config, Discord);
             return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
         }
     }
