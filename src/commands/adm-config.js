@@ -9,6 +9,7 @@ module.exports = {
             .setTitle(`LeivaaDiscordJS Configs Commands:`)
             .addFields(
                 { name: `${config.prefix}config loadDefaults`, value: `> ${DiscordBot.commands.get('loadDefaults').description}\n > *Usage*: ${config.prefix}config loadDefaults`},
+                { name: `${config.prefix}config display`, value: `> ${DiscordBot.commands.get('cfg-display').description}\n > *Usage*: ${config.prefix}config display`},
                 { name: `${config.prefix}config prefix`, value: `> ${DiscordBot.commands.get('prefix').description}\n > *Usage*: ${config.prefix}config prefix {new_prefix}`},
                 { name: `${config.prefix}config maxDeleting`, value: `> ${DiscordBot.commands.get('maxDeleting').description}\n > *Usage*: ${config.prefix}config maxDeleting {new_max}`},
                 { name: `${config.prefix}config colors`, value: `> ${DiscordBot.commands.get('colors').description}\n > *Usage*: ${config.prefix}config colors`},

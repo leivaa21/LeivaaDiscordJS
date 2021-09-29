@@ -1,6 +1,6 @@
 {
   "prefix": "!",
-  "welcomeChannel": "undefined",
+  "welcomeChannel": "",
   "welcomeMsg": "",
   "maxDeleting": 20,
   "botLogo": "https://i.imgur.com/sNCtn86.png",

@@ -9,9 +9,8 @@ module.exports = {
         if(channel == undefined) {
             return message.channel.send(`Channel not found, please copy the exact name of the channel!`);
         }
-        replace(__dirname + "/../config.json", "welcomeChannel", new_channel);
+        replace(__dirname + "/../config.json", "welcomeChannel", channel.id);
         readConfig();
-        console.log(message.guild.channels.cache.find(ch => ch.name === config.welcomeChannel))
-        return message.channel.send(`Welcome channel succesfuly changed to ${new_channel} !`);
+        return message.channel.send(`Welcome channel succesfuly changed to <#${channel.id}> !`);
     }
 }
