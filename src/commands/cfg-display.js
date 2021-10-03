@@ -15,8 +15,8 @@ module.exports = {
             .addFields(
                 { name: `Prefix`, value: config.prefix},
                 { name: `MaxDeleting`, value: config.maxDeleting},
-                { name: `welcomeChannel`, value: config.welcomeChannel =! undefined ? `<#${config.welcomeChannel}>` : "undefined" },
-                { name: `welcomeMsg`, value: config.welcomeMsg =! undefined ? config.welcomeMsg : "undefined" },
+                { name: `welcomeChannel`, value: config.welcomeChannel =! "undefined" ? `<#${config.welcomeChannel}>` : "undefined" },
+                { name: `welcomeMsg`, value: config.welcomeMsg},
                 { name: `color`, value: color},
             )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);

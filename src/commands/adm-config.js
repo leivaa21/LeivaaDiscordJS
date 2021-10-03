@@ -16,6 +16,7 @@ module.exports = {
                 { name: `${config.prefix}config color`, value: `> ${DiscordBot.commands.get('color').description}\n > *Usage*: ${config.prefix}config color {new_color}`},
                 { name: `${config.prefix}config welcomeChannel`, value: `> ${DiscordBot.commands.get('welcomeChannel').description}\n > *Usage*: ${config.prefix}config welcomeChannel {new_channel}`},
                 { name: `${config.prefix}config welcomeMsg`, value: `> ${DiscordBot.commands.get('welcomeMsg').description}\n > *Usage*: ${config.prefix}config welcomeMsg {new_msg}`},
+                { name: `${config.prefix}config reactionRole`, value: `> ${DiscordBot.commands.get('cfgrr-reactionRole').description}\n > *Usage*: ${config.prefix}config reactionRole`},
             )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
