@@ -3,6 +3,11 @@ module.exports = {
     description: 'Shows all my actual reaction role configs.',
     async execute(message, config, rrConfig, Discord) {
         
+        var channelId = undefined;
+        const channel = message.guild.channels.cache.find(ch => ch.id === rrConfig.channel);
+        if(channel != undefined) channelId = channel.id;
+
+
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
             .setAuthor(config.botName,config.botLogo)
@@ -10,8 +15,8 @@ module.exports = {
             .addFields(
                 { name: `Active`, value: rrConfig.idMsg != "undefined" ? "Yes" : "No"},
                 { name: `Title`, value: rrConfig.title},
-                { name: `Description`, value: rrConfig.description},
-                { name: `Channel`, value: rrConfig.channel =! "undefined" ? `<#${rrConfig.channel}>` : "undefined" },
+                { name: `Message`, value: rrConfig.message},
+                { name: `Channel`, value: channelId =! undefined ? `<#${channelId}>` : "undefined" },
                 )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 

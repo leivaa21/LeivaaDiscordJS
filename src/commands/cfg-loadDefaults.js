@@ -24,7 +24,7 @@ const defaults = {
     "idMsg":"undefined",
     "title": "undefined",
     "channel": "undefined",
-    "description": "undefined",
+    "message": "undefined",
     "nRoles": 0,
     "rol1":{
         "id":"",
@@ -62,7 +62,7 @@ const defaults = {
           replace(__dirname + "/../configs/rrConfig.json", "idMsg", rrDefaults.idMsg);
           replace(__dirname + "/../configs/rrConfig.json", "title", rrDefaults.title);
           replace(__dirname + "/../configs/rrConfig.json", "channel", rrDefaults.channel);
-          replace(__dirname + "/../configs/rrConfig.json", "description", rrDefaults.description);
+          replace(__dirname + "/../configs/rrConfig.json", "message", rrDefaults.message);
           replace(__dirname + "/../configs/rrConfig.json", "nRoles", rrDefaults.nRoles);
           replace(__dirname + "/../configs/rrConfig.json", "rol1", rrDefaults.rol1);
           replace(__dirname + "/../configs/rrConfig.json", "rol2", rrDefaults.rol2);

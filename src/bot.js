@@ -51,7 +51,7 @@ let rrConfig = {
     "idMsg": "",
     "title": "",
     "channel": "",
-    "description": "",
+    "message": "",
     "nRoles": 0,
     "rol1":{
         "id":"",
@@ -85,7 +85,7 @@ function readRrConfig() {
         console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ] ACTUAL RRCONFIG\n"
             +"\x1b[36m| >\x1b[0m IdMsg = "+rrConfig.idMsg+"\n"
             +"\x1b[36m| >\x1b[0m Title = "+rrConfig.title+"\n"
-            +"\x1b[36m| >\x1b[0m Description = "+rrConfig.description+"\n"
+            +"\x1b[36m| >\x1b[0m Message = "+rrConfig.message+"\n"
             +"\x1b[36m| >\x1b[0m Channel = "+rrConfig.channel+"\n"
             +"\x1b[36m| >\x1b[0m nRoles = "+rrConfig.nRoles+"\n");
     })
@@ -225,19 +225,27 @@ DiscordBot.on('message', async(message) => {
                     
                 }
                 if(args[1] == 'setChannel'){
+                    DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, config);
                     readRrConfig();
                     return;
                 }
-                if(args[1] == 'setDescription'){
+                if(args[1] == 'setTitle'){
+                    DiscordBot.commands.get('cfgrr-setTitlers').execute(message, args, config);
+                    readRrConfig();
+                    return;
+                }
+                if(args[1] == 'setMsg'){
+                    DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, config);
                     readRrConfig();
                     return;
                 }
                 if(args[1] == 'addRole'){
+                    DiscordBot.commands.get('cfgrr-addRole').execute();
                     readRrConfig();
                     return;
                 }
 
-                return DiscordBot.commands.get('cfgrr-reactionRole').execute(message, config, Discord, DiscordBot);
+                return DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
                 
             }
 
