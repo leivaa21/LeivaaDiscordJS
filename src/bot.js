@@ -132,7 +132,7 @@ DiscordBot.on('message', async(message) => {
     if (message.content.startsWith(config.prefix)) {
 
         const args = message.content.slice(config.prefix.length).split(/ +/);
-        const command = args.shift().toLocaleLowerCase();
+        const command = args.shift();
 
         /**
          * Global Commands (marked as global- on ./commands)
@@ -153,20 +153,26 @@ DiscordBot.on('message', async(message) => {
          */
         if (command === 'kick') {
             if (!message.member.hasPermission(['KICK_MEMBERS'])) return message.reply('No tienes permisos suficientes para kickear a una persona del servidor.').then(msg => msg.delete({ timeout: 3 * 1000 }));
-            DiscordBot.commands.get('kick').execute(message, config);
+            return DiscordBot.commands.get('kick').execute(message, config);
         }
         if (command === 'ban') {
             if (!message.member.hasPermission(['BAN_MEMBERS'])) return message.reply(`No tienes permisos suficientes para banear una persona del servidor.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            DiscordBot.commands.get('ban').execute(message, args, config);
+            return DiscordBot.commands.get('ban').execute(message, args, config);
         }
         if (command === 'clear') {
             if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return message.reply(`No tienes permisos suficientes para borrar mensajes.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            DiscordBot.commands.get('clear').execute(message, args, config);
+            return DiscordBot.commands.get('clear').execute(message, args, config);
         }
 
         /**
          * Admin Commands (marked as adm- on ./commands)
          */
+        if(command === 'reactionRole'){
+            if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
+            console.log("yes");
+            return DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord);
+        }
+
         if (command === 'config') {
             if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
             
@@ -253,8 +259,6 @@ DiscordBot.on('message', async(message) => {
                 return DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
                 
             }
-
-
 
             return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
         }

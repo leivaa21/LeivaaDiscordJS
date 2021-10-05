@@ -32,7 +32,6 @@ module.exports = {
                 });
         }
         if(rrConfig.nRoles > 1){
-            rolName2 = message.guild.roles.cache.find(role => role.id === rrConfig.rol2.id).name;
             embed.addFields({ 
                 name: `Added Roles (2)`, 
                 value: `> Name = <@&${rrConfig.rol2.id}>` 
@@ -41,7 +40,6 @@ module.exports = {
                 });
         }
         if(rrConfig.nRoles > 2){
-            rolName3 = message.guild.roles.cache.find(role => role.id === rrConfig.rol3.id).name;
             embed.addFields({ 
                 name: `Added Roles (3)`, 
                 value: `> Name = <@&${rrConfig.rol3.id}>` 
