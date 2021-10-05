@@ -244,6 +244,11 @@ DiscordBot.on('message', async(message) => {
                     readRrConfig();
                     return;
                 }
+                if(args[1] == 'removeRole'){
+                    DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, config, rrConfig, DiscordBot);
+                    readRrConfig();
+                    return;
+                }
 
                 return DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
                 
