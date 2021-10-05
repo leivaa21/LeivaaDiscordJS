@@ -16,7 +16,7 @@ module.exports = {
                 { name: `Active`, value: rrConfig.idMsg != "undefined" ? "Yes" : "No"},
                 { name: `Title`, value: rrConfig.title},
                 { name: `Message`, value: rrConfig.message},
-                { name: `Channel`, value: channelId =! undefined ? `<#${channelId}>` : "undefined" },
+                { name: `Channel`, value: channelId == undefined ? "undefined" : `<#${channelId}>` },
                 )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
@@ -24,10 +24,9 @@ module.exports = {
                 
         if(rrConfig.nRoles == 0 ) embed.addFields({ name: `Added Roles`, value: "No one"});
         if(rrConfig.nRoles > 0){
-            rolName1 = message.guild.roles.cache.find(role => role.id === rrConfig.rol1.id).name;
             embed.addFields({ 
                 name: `Added Roles (1)`, 
-                value: `> Name = ${rolName1}` 
+                value: `> Name = <@&${rrConfig.rol1.id}>` 
                     +`\n > Emoji = ${rrConfig.rol1.emoji}`
                     +`\n > Description = ${rrConfig.rol1.description}`
                 });
@@ -36,7 +35,7 @@ module.exports = {
             rolName2 = message.guild.roles.cache.find(role => role.id === rrConfig.rol2.id).name;
             embed.addFields({ 
                 name: `Added Roles (2)`, 
-                value: `> Name = ${rolName2}` 
+                value: `> Name = <@&${rrConfig.rol2.id}>` 
                     +`\n > Emoji = ${rrConfig.rol2.emoji}`
                     +`\n > Description = ${rrConfig.rol2.description}`
                 });
@@ -45,7 +44,7 @@ module.exports = {
             rolName3 = message.guild.roles.cache.find(role => role.id === rrConfig.rol3.id).name;
             embed.addFields({ 
                 name: `Added Roles (3)`, 
-                value: `> Name = ${rolName3}` 
+                value: `> Name = <@&${rrConfig.rol3.id}>` 
                     +`\n > Emoji = ${rrConfig.rol3.emoji}`
                     +`\n > Description = ${rrConfig.rol3.description}`
                 });

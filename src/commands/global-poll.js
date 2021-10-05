@@ -1,7 +1,7 @@
 module.exports = {
     name: 'poll',
     description: `Creates a Yes/No Poll!`,
-    async execute(message, args, Discord) {
+    async execute(message, args, config, Discord) {
 
         const tickEmoji = '✅';
         const crossEmoji = '❌';

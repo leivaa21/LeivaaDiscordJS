@@ -230,7 +230,7 @@ DiscordBot.on('message', async(message) => {
                     return;
                 }
                 if(args[1] == 'setTitle'){
-                    DiscordBot.commands.get('cfgrr-setTitlers').execute(message, args, config);
+                    DiscordBot.commands.get('cfgrr-setTitle').execute(message, args, config);
                     readRrConfig();
                     return;
                 }
@@ -240,7 +240,7 @@ DiscordBot.on('message', async(message) => {
                     return;
                 }
                 if(args[1] == 'addRole'){
-                    DiscordBot.commands.get('cfgrr-addRole').execute();
+                    DiscordBot.commands.get('cfgrr-addRole').execute(message, args, config, rrConfig, DiscordBot);
                     readRrConfig();
                     return;
                 }

@@ -19,7 +19,7 @@ module.exports = {
             .addFields(
                 { name: `Prefix`, value: config.prefix},
                 { name: `MaxDeleting`, value: config.maxDeleting},
-                { name: `welcomeChannel`, value: channelId =! undefined ? `<#${channelId}>` : "undefined"},
+                { name: `welcomeChannel`, value: channelId == undefined ? "undefined" : `<#${channelId}>` },
                 { name: `welcomeMsg`, value: config.welcomeMsg},
                 { name: `color`, value: color},
             )

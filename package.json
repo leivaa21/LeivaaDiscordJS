@@ -4,7 +4,7 @@
   "description": "This is a bot developed for administrate a discord server. Made while learning about JS and some libraries. By Leivaa",
   "main": "src/index.js",
   "scripts": {
-    "start":"nodemon -e src/index",
+    "start": "nodemon -e src/index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node src/index.js"
   },
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "emoji-regex": "^10.0.0",
     "esm": "^3.2.25",
     "fs": "0.0.1-security",
     "nodemon": "^2.0.13",
