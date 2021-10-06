@@ -5,20 +5,20 @@ module.exports = {
     description: `Add a role to the reaction role embed.`,
     async execute(message, args, config, rrConfig) {
         
-        if(rrConfig.nRoles == 3) return message.channel.send(`Already have 3 roles added, sorry but for now I can not save more roles`);
-        if(!args[4]) return message.channel.send(`Use ${config.prefix}config reactionRole addRole {rolname/rolId} {EmojiForReacting} {Description of role} to run this command correctly`);
+        if(rrConfig.nRoles == 3) return message.channel.send(`Already have \`3 roles added\`, sorry but for now I can not save more roles`);
+        if(!args[4]) return message.channel.send(`Use \`${config.prefix}config reactionRole addRole {rol_name/@rol} {EmojiForReacting} {Description of role}\` to run this command correctly`);
         
         var role;
         const new_role = args[2];
         if(new_role[0] == "<") role = message.guild.roles.cache.find(role => role.id === new_role.slice(3,args[2].length-1));
         else role = message.guild.roles.cache.find(role => role.name === new_role); 
         if(role == undefined) {
-            return message.channel.send(`Role not found, please copy the exact name of the role!`);
+            return message.channel.send(`Role not found, please \`copy the exact name of the rol or @ it\`!`);
         }
 
 
         let emoji = args[3].match(emojiRegex());
-        if(emoji == null) return message.channel.send(`Emoji not found, please type an standard emoji! (custom discord emojis not suported yet!)`);
+        if(emoji == null) return message.channel.send(`Emoji not found, please \`type an standard emoji\`! (custom discord emojis not suported yet!)`);
         emoji = emoji[0];
         
         var descripcion="";
@@ -44,6 +44,6 @@ module.exports = {
             replace(__dirname + "/../configs/rrConfig.json", "rol3", rol);
         }
         replace(__dirname + "/../configs/rrConfig.json", "nRoles", ++rrConfig.nRoles);
-        return message.channel.send(`Role ${role} succesfuly added! Now I have ${rrConfig.nRoles} saved for reactionRole embed YAY!`);
+        return message.channel.send(`Role ${role} succesfuly added! Now I have \`${rrConfig.nRoles} saved\` for reactionRole embed YAY!`);
     } 
 }

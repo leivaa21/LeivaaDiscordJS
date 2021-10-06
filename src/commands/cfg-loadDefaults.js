@@ -48,7 +48,7 @@ const defaults = {
       name: 'loadDefaults',
       description: `Set the configs all by default.`,
       async execute(message, args, config) {
-          if(args[1] != undefined) return message.channel.send(`Use ${config.prefix}config loadDefaults to run this command correctly`);
+          if(args[1] != undefined) return message.channel.send(`Use \`${config.prefix}config loadDefaults\` to run this command correctly`);
           replace(__dirname + "/../configs/config.json", "prefix", defaults.prefix);
           replace(__dirname + "/../configs/config.json", "welcomeChannel", defaults.welcomeChannel);
           replace(__dirname + "/../configs/config.json", "welcomeMsg", defaults.welcomeMsg);
@@ -68,6 +68,6 @@ const defaults = {
           replace(__dirname + "/../configs/rrConfig.json", "rol2", rrDefaults.rol2);
           replace(__dirname + "/../configs/rrConfig.json", "rol3", rrDefaults.rol3);
 
-          return message.channel.send(`Defaults loaded succesfuly`);
+          return message.channel.send(`\`Defaults configs\` loaded succesfuly`);
       }
   }
