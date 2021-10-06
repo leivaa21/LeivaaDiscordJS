@@ -4,7 +4,7 @@ const defaults = {
     "welcomeMsg":"undefined",
     "maxDeleting": 20,
     "botLogo": "https://i.imgur.com/sNCtn86.png",
-    "botName": "leivaaStdio",
+    "botName": "LeivaaDiscordJS",
     "leivaaLogo": "https://i.imgur.com/dZWwv1R.png",
     "color": "#FFFFFF",
     "colors": {
