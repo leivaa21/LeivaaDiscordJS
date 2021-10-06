@@ -115,7 +115,7 @@ console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ] ' + '\x1b[33m' + countCommands +
  * Welcome command if someone joins the server
  */
 DiscordBot.on('guildMemberAdd', async(member) =>{
-    DiscordBot.commands.get('welcome').execute(member, config, Discord);
+    return DiscordBot.commands.get('welcome').execute(member, config, Discord);
 })
 
 
@@ -124,7 +124,7 @@ DiscordBot.on('guildMemberAdd', async(member) =>{
  * Controlling the users chat commands
  */
 DiscordBot.on('message', async(message) => {
-    console.log(message.author.username + ": " + message.content);
+    console.log(`\x1b[33m${message.author.username}\x1b[0m at\x1b[36m #${message.channel.name} \x1b[0m: ${message.content}`);
     if (message.content.startsWith(config.prefix)) {
 
         const args = message.content.slice(config.prefix.length).split(/ +/);

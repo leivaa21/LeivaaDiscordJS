@@ -7,15 +7,19 @@ module.exports = {
             return;
         }
         else if (args[0] > config.maxDeleting) {
-            message.channel.send(`I can't remove more than \`${config.maxDeleting}\` messages.`);
-            await message.channel.messages.fetch({ limit: config.maxDeleting }).then(messages => {
-                message.channel.bulkDelete(messages).catch(err => console.log(err));
+            message.channel.send(`I can't remove more than \`${config.maxDeleting}\` messages.`).then(msg => msg.delete({ timeout: 5 * 1000 }));
+            await message.channel.messages.fetch({ limit: config.maxDeleting }).then( async (messages) => {
+                await message.channel.bulkDelete(messages).catch(err => console.log(err));
+                return message.channel.send(`Cleaned \`${config.maxDeleting}\` messages!`).then(msg => msg.delete({ timeout: 5 * 1000 }));
             });
-            return message.channel.send(`Cleaned \`${config.maxDeleting}\` messages!`);
+            
         }
         borrar = args[0] + 1;  
-        await message.channel.messages.fetch({ limit: ++args[0]}).then(messages => {
-            message.channel.bulkDelete(messages)}).catch(err => {console.log(err)});
-        return message.channel.send(`Cleaned \`${--args[0]}\` messages!`).then(msg => msg.delete({ timeout: 5 * 1000 }));
+        await message.channel.messages.fetch({ limit: ++args[0]}).then( async (messages) => {
+            await message.channel.bulkDelete(messages).catch(err => console.log(err));
+                return message.channel.send(`Cleaned \`${--args[0]}\` messages!`).then(msg => msg.delete({ timeout: 5 * 1000 }));
+            });
+            
+        
     }
 }
