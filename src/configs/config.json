@@ -1,12 +1,12 @@
 {
   "prefix": "!",
   "welcomeChannel": "undefined",
-  "welcomeMsg": "Hello buddy!",
-  "maxDeleting": "99",
+  "welcomeMsg": "undefined",
+  "maxDeleting": 20,
   "botLogo": "https://i.imgur.com/sNCtn86.png",
   "botName": "LeivaaDiscordJS",
   "leivaaLogo": "https://i.imgur.com/dZWwv1R.png",
-  "color": "#E74C3C",
+  "color": "#FFFFFF",
   "colors": {
     "WHITE": "#FFFFFF",
     "AQUA": "#1ABC9C",

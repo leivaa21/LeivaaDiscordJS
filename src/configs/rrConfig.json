@@ -3,11 +3,11 @@
   "title": "undefined",
   "channel": "undefined",
   "message": "undefined",
-  "nRoles": 1,
+  "nRoles": 0,
   "rol1": {
-    "id": "894345986493792357",
-    "emoji": "🐺",
-    "description": "wolf wolf"
+    "id": "",
+    "emoji": "",
+    "description": ""
   },
   "rol2": {
     "id": "",
