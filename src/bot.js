@@ -23,26 +23,16 @@ let config = {
  * Function that reads config.json and save it in the previous 
  * variable "config"
  */
-function readConfig() {
-    fs.readFile(__dirname + '/configs/config.json', 'utf-8', (err, jsonString) => {
+async function readConfig(callback) {
+    await fs.readFile(__dirname + '/configs/config.json', 'utf-8', (err, jsonString) => {
         if(err) return console.log(err); 
         
         config = JSON.parse(jsonString) 
         
-        var color;
-        for(var namecolor in config.colors){
-            if(config.colors[namecolor]==config.color) color = namecolor;
-        }
-
-        console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ] ACTUAL CONFIG\n"
-            +"\x1b[36m| >\x1b[0m Prefix = "+config.prefix+"\n"
-            +"\x1b[36m| >\x1b[0m MaxDeleting = "+config.maxDeleting+"\n"
-            +"\x1b[36m| >\x1b[0m welcomeChannel = "+config.welcomeChannel+"\n"
-            +"\x1b[36m| >\x1b[0m welcomeMsg = "+config.welcomeMsg+"\n"
-            +"\x1b[36m| >\x1b[0m color = "+color);
+        
     })
+    if(callback != undefined) callback();
 }
-readConfig();
 
 /**
  * Setup the reactionRole config & readRrConfig();
@@ -75,22 +65,27 @@ let rrConfig = {
  * variable "rrConfig"
  */
 
-function readRrConfig() {
-    fs.readFile(__dirname + '/configs/rrConfig.json', 'utf-8', (err, jsonString) => {
+async function  readRrConfig (callback){
+    await fs.readFile(__dirname + '/configs/rrConfig.json', 'utf-8', (err, jsonString) => {
         if(err) return console.log(err); 
-        
-        rrConfig = JSON.parse(jsonString) 
-        
-
-        console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ] ACTUAL RRCONFIG\n"
-            +"\x1b[36m| >\x1b[0m IdMsg = "+rrConfig.idMsg+"\n"
-            +"\x1b[36m| >\x1b[0m Title = "+rrConfig.title+"\n"
-            +"\x1b[36m| >\x1b[0m Message = "+rrConfig.message+"\n"
-            +"\x1b[36m| >\x1b[0m Channel = "+rrConfig.channel+"\n"
-            +"\x1b[36m| >\x1b[0m nRoles = "+rrConfig.nRoles+"\n");
+        rrConfig = JSON.parse(jsonString)  
     })
+    if(callback != undefined) callback();
 }
-readRrConfig();
+
+/**
+ * Load configs and display on cmd the actual configs
+ */
+readConfig(() => {
+    console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ]\n"
+    +"\x1b[36m| > Config loaded correctly\x1b[0m");
+});
+    
+readRrConfig(() => {
+    console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ]\n"
+    +"\x1b[36m| > ReactionRole Config loaded correctly\x1b[0m");
+});
+
 /**
  * DiscordBot Instance & login
  */
@@ -122,6 +117,7 @@ console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ] ' + '\x1b[33m' + countCommands +
 DiscordBot.on('guildMemberAdd', async(member) =>{
     DiscordBot.commands.get('welcome').execute(member, config, Discord);
 })
+
 
 
 /**
@@ -161,7 +157,7 @@ DiscordBot.on('message', async(message) => {
         }
         if (command === 'clear') {
             if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return message.reply(`No tienes permisos suficientes para borrar mensajes.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            return DiscordBot.commands.get('clear').execute(message, args, config);
+            return await DiscordBot.commands.get('clear').execute(message, args, config);
         }
 
         /**
@@ -169,8 +165,9 @@ DiscordBot.on('message', async(message) => {
          */
         if(command === 'reactionRole'){
             if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
-            console.log("yes");
-            return DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord);
+            DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord);
+            readRrConfig(); 
+            return;
         }
 
         if (command === 'config') {
@@ -232,27 +229,27 @@ DiscordBot.on('message', async(message) => {
                 }
                 if(args[1] == 'setChannel'){
                     DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, config);
-                    readRrConfig();
+                    await readRrConfig();
                     return;
                 }
                 if(args[1] == 'setTitle'){
                     DiscordBot.commands.get('cfgrr-setTitle').execute(message, args, config);
-                    readRrConfig();
+                    await readRrConfig();
                     return;
                 }
                 if(args[1] == 'setMsg'){
                     DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, config);
-                    readRrConfig();
+                    await readRrConfig();
                     return;
                 }
                 if(args[1] == 'addRole'){
                     DiscordBot.commands.get('cfgrr-addRole').execute(message, args, config, rrConfig, DiscordBot);
-                    readRrConfig();
+                    await readRrConfig();
                     return;
                 }
                 if(args[1] == 'removeRole'){
                     DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, config, rrConfig, DiscordBot);
-                    readRrConfig();
+                    await readRrConfig();
                     return;
                 }
 
@@ -263,5 +260,16 @@ DiscordBot.on('message', async(message) => {
             return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
         }
     }
-})
+});
 
+/**
+ * Reaction Role giving and removing roles 
+ */
+DiscordBot.on('messageReactionAdd', async(reaction, user) => {
+    await readRrConfig();
+    return await DiscordBot.commands.get('reactionRoleAdd').execute(reaction, user, rrConfig);
+});
+DiscordBot.on('messageReactionRemove', async(reaction, user) => {
+    await readRrConfig();
+    return await DiscordBot.commands.get('reactionRoleRemove').execute(reaction, user, rrConfig);
+});

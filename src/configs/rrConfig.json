@@ -1,18 +1,18 @@
 {
-  "idMsg": "undefined",
-  "title": "undefined",
-  "channel": "undefined",
-  "message": "undefined",
-  "nRoles": 0,
+  "idMsg": "895256987821015080",
+  "title": " This is a title",
+  "channel": "892403553103142992",
+  "message": " this is a msg",
+  "nRoles": 2,
   "rol1": {
-    "id": "",
-    "emoji": "",
-    "description": ""
+    "id": "894345986493792357",
+    "emoji": "💯",
+    "description": "lol!"
   },
   "rol2": {
-    "id": "",
-    "emoji": "",
-    "description": ""
+    "id": "895008251723268137",
+    "emoji": "🐶",
+    "description": "guau guau"
   },
   "rol3": {
     "id": "",

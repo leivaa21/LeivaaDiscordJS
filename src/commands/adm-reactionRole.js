@@ -3,11 +3,10 @@ module.exports = {
     name: 'adm-reactionRole',
     description: '',
     async execute(message, config, rrConfig, Discord) {
-
-        const msg = message.guild.channels.cache.find(msg => msg.id === rrConfig.idMsg);
-        if(msg != undefined) return message.channel.send(`Reaction role msg already exist on <#${msg.channel.id}>`);
+        
         const channel = message.guild.channels.cache.find(ch => ch.id === rrConfig.channel);
         if(channel == undefined) return message.channel.send(`Reaction role channel is not setted!`);
+        
         if(rrConfig.title === "undefined") return message.channel.send(`Reaction role title is not setted!`);
         if(rrConfig.message === "undefined") return message.channel.send(`Reaction role message is not setted!`);
         if(rrConfig.nRoles == 0) return message.channel.send(`Reaction role embed has no roles added!`);
