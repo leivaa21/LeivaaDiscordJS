@@ -22,14 +22,16 @@ module.exports = {
 
 
                 
-        if(rrConfig.nRoles == 0 ) embed.addFields({ name: `Added Roles`, value: "No one"});
+        if(rrConfig.nRoles == 0 ) 
+            embed.addFields({ name: `Added Roles`, value: "No one"});
+
         if(rrConfig.nRoles > 0){
             embed.addFields({ 
                 name: `Added Roles (1)`, 
                 value: `> Name = <@&${rrConfig.rol1.id}>` 
                     +`\n > Emoji = ${rrConfig.rol1.emoji}`
                     +`\n > Description = ${rrConfig.rol1.description}`
-                });
+            });
         }
         if(rrConfig.nRoles > 1){
             embed.addFields({ 
@@ -37,7 +39,7 @@ module.exports = {
                 value: `> Name = <@&${rrConfig.rol2.id}>` 
                     +`\n > Emoji = ${rrConfig.rol2.emoji}`
                     +`\n > Description = ${rrConfig.rol2.description}`
-                });
+            });
         }
         if(rrConfig.nRoles > 2){
             embed.addFields({ 
@@ -45,8 +47,8 @@ module.exports = {
                 value: `> Name = <@&${rrConfig.rol3.id}>` 
                     +`\n > Emoji = ${rrConfig.rol3.emoji}`
                     +`\n > Description = ${rrConfig.rol3.description}`
-                });
-            }
+            });
+        }
         return message.channel.send(embed);
     }
 }

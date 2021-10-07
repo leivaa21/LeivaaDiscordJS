@@ -2,7 +2,10 @@ module.exports = {
     name: 'colors',
     description: `See all the colors I have.`,
     async execute(message, args, config, Discord) {
-        if(args[1]!=undefined) return message.channel.send(`Use \`${config.prefix}config colors\` to run this command correctly`);
+        
+        if(args[1]!=undefined) 
+            return message.channel.send(`Use \`${config.prefix}config colors\` to run this command correctly`);
+        
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
             .setAuthor(config.botName,config.botLogo)
@@ -19,6 +22,7 @@ module.exports = {
                 {name: `RED`, value: `#E74C3C`},
                 {name: `YELLOW`, value: `#FFFF00`},
             )
+        
         message.channel.send(embed);
 
     }

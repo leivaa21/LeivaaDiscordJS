@@ -20,6 +20,6 @@ module.exports = {
             )
             .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
-        return message.channel.send(embed);
+        message.channel.send(embed);
     }
 }

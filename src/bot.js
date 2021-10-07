@@ -124,141 +124,191 @@ DiscordBot.on('guildMemberAdd', async(member) =>{
  * Controlling the users chat commands
  */
 DiscordBot.on('message', async(message) => {
-    console.log(`\x1b[33m${message.author.username}\x1b[0m at\x1b[36m #${message.channel.name} \x1b[0m: ${message.content}`);
+    console.log(`\x1b[33m${message.author.username}\x1b[0m at\x1b[36m #${message.channel.name} \x1b[0m: ${message.content} \n\x1b[36m| > \x1b[31m MessageID: \x1b[32m ${message.id}\x1b[0m`);
     if (message.content.startsWith(config.prefix)) {
 
         const args = message.content.slice(config.prefix.length).split(/ +/);
         const command = args.shift();
 
-        /**
-         * Global Commands (marked as global- on ./commands)
-         */
+        switch(command.toLowerCase()){
 
-        if (command === 'ping') {
-            return message.reply(`🏓 pong!`);
-        }
-        if (command === 'poll') {
-            return DiscordBot.commands.get('poll').execute(message, args, config, Discord);
-        }
-        if(command === 'help'){
-            return DiscordBot.commands.get('help').execute(message, config, Discord, DiscordBot);
-        }
-
-        /**
-         * Moderation Commands (marked as mod- on ./commands)
-         */
-        if (command === 'kick') {
-            if (!message.member.hasPermission(['KICK_MEMBERS'])) return message.reply('No tienes permisos suficientes para kickear a una persona del servidor.').then(msg => msg.delete({ timeout: 3 * 1000 }));
-            return DiscordBot.commands.get('kick').execute(message, config);
-        }
-        if (command === 'ban') {
-            if (!message.member.hasPermission(['BAN_MEMBERS'])) return message.reply(`No tienes permisos suficientes para banear una persona del servidor.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            return DiscordBot.commands.get('ban').execute(message, args, config);
-        }
-        if (command === 'clear') {
-            if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return message.reply(`No tienes permisos suficientes para borrar mensajes.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            return await DiscordBot.commands.get('clear').execute(message, args, config);
-        }
-
-        /**
-         * Admin Commands (marked as adm- on ./commands)
-         */
-        if(command === 'reactionRole'){
-            if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
-            DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord);
-            readRrConfig(); 
-            return;
-        }
-
-        if (command === 'config') {
-            if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.reply('No puedes utilizar este comando!');
-            
             /**
-             * All the config command options
-             */
-            
-            
-            if( args[0] == 'display' ) return DiscordBot.commands.get('cfg-display').execute(message, config, Discord);
-
-            if( args[0] == 'loadDefaults' ){
-                DiscordBot.commands.get('loadDefaults').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                readRrConfig(); //Updating the rrConfig loaded 
-                return;
-            } 
-            if( args[0] == 'prefix' ){
-                DiscordBot.commands.get('prefix').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                return;
-            }
-            if( args[0] == 'maxDeleting' ){
-                DiscordBot.commands.get('maxDeleting').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                return;
-            } 
-            if( args[0] == 'colors' ){
-                DiscordBot.commands.get('colors').execute(message, args, config, Discord);
-                readConfig(); //Updating the config loaded 
-                return;
-            } 
-            if( args[0] == 'color' ){
-                DiscordBot.commands.get('color').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                return;
-            } 
-            if( args[0] == 'welcomeChannel' ){
-                DiscordBot.commands.get('welcomeChannel').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                return;
-            } 
-            if( args[0] == 'welcomeMsg' ){
-                DiscordBot.commands.get('welcomeMsg').execute(message, args, config);
-                readConfig(); //Updating the config loaded 
-                return;
-            } 
-            
-            /**
-             * All the reaction role config command options
+             * Global Commands (marked as global- on ./commands)
              */
 
-            if(args[0] == 'reactionRole'){
+            case 'ping':
+                message.reply(`🏓 pong!`).then(msg => msg.delete({ timeout: 3 * 1000 }));
+                break;
 
-                if(args[1] == 'display'){
-                    return DiscordBot.commands.get('cfgrr-display').execute(message, config, rrConfig, Discord);
-                    
-                }
-                if(args[1] == 'setChannel'){
-                    DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, config);
-                    await readRrConfig();
-                    return;
-                }
-                if(args[1] == 'setTitle'){
-                    DiscordBot.commands.get('cfgrr-setTitle').execute(message, args, config);
-                    await readRrConfig();
-                    return;
-                }
-                if(args[1] == 'setMsg'){
-                    DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, config);
-                    await readRrConfig();
-                    return;
-                }
-                if(args[1] == 'addRole'){
-                    DiscordBot.commands.get('cfgrr-addRole').execute(message, args, config, rrConfig, DiscordBot);
-                    await readRrConfig();
-                    return;
-                }
-                if(args[1] == 'removeRole'){
-                    DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, config, rrConfig, DiscordBot);
-                    await readRrConfig();
-                    return;
+            case 'poll':
+                DiscordBot.commands.get('poll').execute(message, args, config, Discord)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                break;
+
+            case 'help':
+                DiscordBot.commands.get('help').execute(message, config, Discord, DiscordBot);
+                break;
+            
+            /**
+             * Moderation Commands (marked as mod- on ./commands)
+             */
+            case 'kick':
+
+                if (!message.member.hasPermission(['KICK_MEMBERS'])) {
+                    message.reply(`You dont have permissions to \`kick\` someone`)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
                 }
 
-                return DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
-                
-            }
+                DiscordBot.commands.get('kick').execute(message, config)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                break;
 
-            return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
+            case 'ban':
+
+                if (!message.member.hasPermission(['BAN_MEMBERS'])) {
+                    message.reply(`You dont have permissions to \`ban\` someone`)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+
+                DiscordBot.commands.get('ban').execute(message, args, config)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                break;
+
+            case 'clear':
+
+                if (!message.member.hasPermission(['MANAGE_MESSAGES'])) {
+                    message.reply(`You dont have permissions to \`clear messages\``)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+
+                DiscordBot.commands.get('clear').execute(message, args, config)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                break;
+            
+            /**
+             * Admin Commands (marked as adm- on ./commands)
+             */
+            case 'reactionRole':
+
+                if (!message.member.hasPermission(['ADMINISTRATOR'])){
+                    message.reply(`To run this command you need more power \`(Just for admins :c)\``)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+
+                DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                readRrConfig(); 
+                break;
+
+            case 'config': 
+
+                /**
+                 * All the config command options
+                 */
+                if (!message.member.hasPermission(['ADMINISTRATOR'])){
+                    message.reply(`To run this command you need more power \`(Just for admins :c)\``)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+                if(args[0] == undefined) return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
+                switch(args[0].toLowerCase()){
+
+                    case 'display':
+                        DiscordBot.commands.get('cfg-display').execute(message, config, Discord);
+                        break;
+
+                    case 'loaddefaults':
+                        DiscordBot.commands.get('loadDefaults').execute(message, args, config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        readRrConfig(); //Updating the rrConfig loaded 
+                        break;
+
+                    case 'prefix':
+                        DiscordBot.commands.get('prefix').execute(message, args, config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'maxdeleting':
+                        DiscordBot.commands.get('maxDeleting').execute(message, args, config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'colors':
+                        DiscordBot.commands.get('colors').execute(message, args, config, Discord)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'color':
+                        DiscordBot.commands.get('color').execute(message, args, config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'welcomechannel':
+                        DiscordBot.commands.get('welcomeChannel').execute(message, args, config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'welcomemsg':
+                        DiscordBot.commands.get('welcomeMsg').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        readConfig(); //Updating the config loaded 
+                        break;
+
+                    case 'reactionRole':
+                        /**
+                         * All the reaction role config command options
+                         */
+                        if (args[1 == undefined]) DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
+                        switch(args[1].toLowerCase()){
+
+                            case 'display':
+                                DiscordBot.commands.get('cfgrr-display').execute(message, config, rrConfig, Discord);
+                                break;
+
+                            case 'setchannel':
+                                DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                readRrConfig();
+                                break;
+
+                            case 'setmsg':
+                                DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                readRrConfig();
+                                break;
+
+                            case 'addrole':
+                                DiscordBot.commands.get('cfgrr-addRole').execute(message, args, config, rrConfig, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                readRrConfig();
+                                break;
+
+                            case 'removerole':
+                                DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, config, rrConfig, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                readRrConfig();
+                                break;
+
+                            default:
+                                DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                break;
+                        }
+
+                        break;
+
+                    default: // If args[0] dont match with a registered command
+                        DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
+                        break;
+                }
+                break;
         }
+        if ( command != 'clear' ) 
+            message.delete({ timeout: 3 * 1000 });
     }
 });
 

@@ -1,17 +1,21 @@
 import {replace} from 'replace-json-property'
+
 module.exports = {    
     name: 'cfgrr-removeRole',
     description: `Remove a role to the reaction role embed.`,
     async execute(message, args, config, rrConfig) {
         
-        if(!args[2]) return message.channel.send(`Use \`${config.prefix}config reactionRole removeRole {rol_name/@rol}\` to run this command correctly`);
+        if(!args[2]) 
+            return message.channel.send(`Use \`${config.prefix}config reactionRole removeRole {rol_name/@rol}\` to run this command correctly`);
         
-        if(rrConfig.nRoles == 0) return message.channel.send(`No roles added to the reaction role embed!`);
+        if(rrConfig.nRoles == 0)
+            return message.channel.send(`No roles added to the reaction role embed!`);
         
         var role;
         const new_role = args[2];
         if(new_role[0] == "<") role = message.guild.roles.cache.find(role => role.id === new_role.slice(3,args[2].length-1));
         else role = message.guild.roles.cache.find(role => role.name === new_role); 
+        
         if(role == undefined) {
             return message.channel.send(`Role not found, please \`copy the exact name of the rol or @ it\`!`);
         }
@@ -21,12 +25,14 @@ module.exports = {
             "emoji": "",
             "description": ""
         }
-        console.log(role.id);
+        
         if(rrConfig.nRoles == 1){
             if(role.id == rrConfig.rol1.id)
                 replace(__dirname + "/../configs/rrConfig.json", "rol1", rol);
-            else return message.channel.send(`${role} is \`not currently added\` to the reaction role embed!!`);
+            else 
+                return message.channel.send(`${role} is \`not currently added\` to the reaction role embed!!`);
         }
+        
         if(rrConfig.nRoles == 2){
             if(role.id == rrConfig.rol1.id){
                 replace(__dirname + "/../configs/rrConfig.json", "rol1", rrConfig.rol2);

@@ -7,9 +7,9 @@ module.exports = {
         const crossEmoji = '❌';
 
         let pollTitle = args.slice(0).join(' ');
-        if (!pollTitle) {
+        if (!pollTitle)
             return message.reply(`You should use \`${ config.prefix }poll {Tittle}\` to run this command correctly.`);
-        }
+            
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
             .setTitle(pollTitle)

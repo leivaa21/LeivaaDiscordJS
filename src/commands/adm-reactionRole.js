@@ -1,15 +1,22 @@
 import {replace} from 'replace-json-property'
+
 module.exports = {
     name: 'adm-reactionRole',
     description: '',
     async execute(message, config, rrConfig, Discord) {
         
         const channel = message.guild.channels.cache.find(ch => ch.id === rrConfig.channel);
-        if(channel == undefined) return message.channel.send(`Reaction role channel is not setted!`);
+        if(channel == undefined) 
+            return message.channel.send(`Reaction role channel is not setted!`);
         
-        if(rrConfig.title === "undefined") return message.channel.send(`Reaction role title is not setted!`);
-        if(rrConfig.message === "undefined") return message.channel.send(`Reaction role message is not setted!`);
-        if(rrConfig.nRoles == 0) return message.channel.send(`Reaction role embed has no roles added!`);
+        if(rrConfig.title === "undefined") 
+            return message.channel.send(`Reaction role title is not setted!`);
+
+        if(rrConfig.message === "undefined") 
+            return message.channel.send(`Reaction role message is not setted!`);
+
+        if(rrConfig.nRoles == 0) 
+            return message.channel.send(`Reaction role embed has no roles added!`);
 
         let embed = new Discord.MessageEmbed()
             .setColor(config.color)
@@ -39,9 +46,14 @@ module.exports = {
     
         let messageEmbed = await channel.send(embed);
         
-        if(rrConfig.nRoles > 0) messageEmbed.react(rrConfig.rol1.emoji);
-        if(rrConfig.nRoles > 1) messageEmbed.react(rrConfig.rol2.emoji);
-        if(rrConfig.nRoles > 2) messageEmbed.react(rrConfig.rol3.emoji);
+        if(rrConfig.nRoles > 0) 
+            messageEmbed.react(rrConfig.rol1.emoji);
+
+        if(rrConfig.nRoles > 1) 
+            messageEmbed.react(rrConfig.rol2.emoji);
+
+        if(rrConfig.nRoles > 2) 
+            messageEmbed.react(rrConfig.rol3.emoji);
 
         replace(__dirname + "/../configs/rrConfig.json", "idMsg", messageEmbed.id);
 
