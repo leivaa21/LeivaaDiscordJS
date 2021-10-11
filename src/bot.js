@@ -4,87 +4,23 @@
 import {} from 'dotenv/config'
 import Discord from 'discord.js'
 import fs from 'fs'
+import Config from './models/config'
 
-/**
-* Setup the config & function readConfig();
-*/
-let config = {
-    "prefix": "",
-    "welcomeChannel": "",
-    "welcomeMsg":"",
-    "maxDeleting": 0,
-    "botLogo": "",
-    "botName": "",
-    "leivaaLogo": "",
-    "color": "",
-    "colors": {}
-}
-/**
- * Function that reads config.json and save it in the previous 
- * variable "config"
- */
-async function readConfig(callback) {
-    await fs.readFile(__dirname + '/configs/config.json', 'utf-8', (err, jsonString) => {
-        if(err) return console.log(err); 
-        
-        config = JSON.parse(jsonString) 
-        
-        
-    })
-    if(callback != undefined) callback();
-}
 
-/**
- * Setup the reactionRole config & readRrConfig();
- */
-let rrConfig = {
-    "idMsg": "",
-    "title": "",
-    "channel": "",
-    "message": "",
-    "nRoles": 0,
-    "rol1":{
-        "id":"",
-        "emoji":"",
-        "description":""
-    },
-    "rol2":{
-        "id":"",
-        "emoji":"",
-        "description":""
-    },
-    "rol3":{
-        "id":"",
-        "emoji":"",
-        "description":""
-    }
-}
 
-/**
- * Function that reads rrConfig.json and save it in the previous 
- * variable "rrConfig"
- */
 
-async function  readRrConfig (callback){
-    await fs.readFile(__dirname + '/configs/rrConfig.json', 'utf-8', (err, jsonString) => {
-        if(err) return console.log(err); 
-        rrConfig = JSON.parse(jsonString)  
-    })
-    if(callback != undefined) callback();
-}
 
 /**
  * Load configs and display on cmd the actual configs
  */
-readConfig(() => {
+const config = new Config(() => {
     console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ]\n"
     +"\x1b[36m| > Config loaded correctly\x1b[0m");
-});
-    
-readRrConfig(() => {
+}, () => {
     console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ]\n"
     +"\x1b[36m| > ReactionRole Config loaded correctly\x1b[0m");
 });
+    
 
 /**
  * DiscordBot Instance & login
@@ -115,7 +51,7 @@ console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ] ' + '\x1b[33m' + countCommands +
  * Welcome command if someone joins the server
  */
 DiscordBot.on('guildMemberAdd', async(member) =>{
-    return DiscordBot.commands.get('welcome').execute(member, config, Discord);
+    return DiscordBot.commands.get('welcome').execute(member, Config, Discord);
 })
 
 
@@ -125,9 +61,9 @@ DiscordBot.on('guildMemberAdd', async(member) =>{
  */
 DiscordBot.on('message', async(message) => {
     console.log(`\x1b[33m${message.author.username}\x1b[0m at\x1b[36m #${message.channel.name} \x1b[0m: ${message.content} \n\x1b[36m| > \x1b[31m MessageID: \x1b[32m ${message.id}\x1b[0m`);
-    if (message.content.startsWith(config.prefix)) {
+    if (message.content.startsWith(Config.getGlobal().prefix)) {
 
-        const args = message.content.slice(config.prefix.length).split(/ +/);
+        const args = message.content.slice(Config.getGlobal().prefix.length).split(/ +/);
         const command = args.shift();
 
         switch(command.toLowerCase()){
@@ -141,12 +77,12 @@ DiscordBot.on('message', async(message) => {
                 break;
 
             case 'poll':
-                DiscordBot.commands.get('poll').execute(message, args, config, Discord)
+                DiscordBot.commands.get('poll').execute(message, args, Config, Discord)
                     .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                 break;
 
             case 'help':
-                DiscordBot.commands.get('help').execute(message, config, Discord, DiscordBot);
+                DiscordBot.commands.get('help').execute(message, Config, Discord, DiscordBot);
                 break;
             
             /**
@@ -160,7 +96,7 @@ DiscordBot.on('message', async(message) => {
                     break;
                 }
 
-                DiscordBot.commands.get('kick').execute(message, config)
+                DiscordBot.commands.get('kick').execute(message, Config)
                     .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                 break;
 
@@ -172,7 +108,7 @@ DiscordBot.on('message', async(message) => {
                     break;
                 }
 
-                DiscordBot.commands.get('ban').execute(message, args, config)
+                DiscordBot.commands.get('ban').execute(message, args, Config)
                     .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                 break;
 
@@ -184,7 +120,7 @@ DiscordBot.on('message', async(message) => {
                     break;
                 }
 
-                DiscordBot.commands.get('clear').execute(message, args, config)
+                DiscordBot.commands.get('clear').execute(message, args, Config)
                     .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                 break;
             
@@ -199,9 +135,9 @@ DiscordBot.on('message', async(message) => {
                     break;
                 }
 
-                DiscordBot.commands.get('adm-reactionRole').execute(message, config, rrConfig, Discord)
+                DiscordBot.commands.get('adm-reactionRole').execute(message, Config, Discord)
                     .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                readRrConfig(); 
+                Config.reload();
                 break;
 
             case 'config': 
@@ -214,95 +150,93 @@ DiscordBot.on('message', async(message) => {
                         .then(msg => msg.delete({ timeout: 3 * 1000 }));
                     break;
                 }
-                if(args[0] == undefined) return DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
+                if(args[0] == undefined) return DiscordBot.commands.get('config').execute(message, Config, Discord, DiscordBot);
                 switch(args[0].toLowerCase()){
 
                     case 'display':
-                        DiscordBot.commands.get('cfg-display').execute(message, config, Discord);
+                        DiscordBot.commands.get('cfg-display').execute(message, Config, Discord);
                         break;
 
                     case 'loaddefaults':
-                        DiscordBot.commands.get('loadDefaults').execute(message, args, config)
+                        DiscordBot.commands.get('loadDefaults').execute(message, args, Config) //FIX THIS LATTER WITH CONFIG METHOD = RESETCONFIG
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
-                        readRrConfig(); //Updating the rrConfig loaded 
+                        Config.reload();
                         break;
 
                     case 'prefix':
-                        DiscordBot.commands.get('prefix').execute(message, args, config)
+                        DiscordBot.commands.get('prefix').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
+                        Config.reload(); //Updating the config loaded 
                         break;
 
                     case 'maxdeleting':
-                        DiscordBot.commands.get('maxDeleting').execute(message, args, config)
+                        DiscordBot.commands.get('maxDeleting').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
+                        Config.reload(); //Updating the config loaded 
                         break;
 
                     case 'colors':
-                        DiscordBot.commands.get('colors').execute(message, args, config, Discord)
+                        DiscordBot.commands.get('colors').execute(message, args, Config, Discord)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
                         break;
 
                     case 'color':
-                        DiscordBot.commands.get('color').execute(message, args, config)
+                        DiscordBot.commands.get('color').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
+                        Config.reload(); //Updating the config loaded 
                         break;
 
                     case 'welcomechannel':
-                        DiscordBot.commands.get('welcomeChannel').execute(message, args, config)
+                        DiscordBot.commands.get('welcomeChannel').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
+                        Config.reload(); //Updating the config loaded 
                         break;
 
                     case 'welcomemsg':
-                        DiscordBot.commands.get('welcomeMsg').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                        readConfig(); //Updating the config loaded 
+                        DiscordBot.commands.get('welcomeMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                        Config.reload(); //Updating the config loaded 
                         break;
 
                     case 'reactionRole':
                         /**
                          * All the reaction role config command options
                          */
-                        if (args[1 == undefined]) DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot);
+                        if (args[1 == undefined]) DiscordBot.commands.get('cfg-reactionRole').execute(message, Config.getGlobal(), Discord, DiscordBot);
                         switch(args[1].toLowerCase()){
 
                             case 'display':
-                                DiscordBot.commands.get('cfgrr-display').execute(message, config, rrConfig, Discord);
+                                DiscordBot.commands.get('cfgrr-display').execute(message, Config.getGlobal(), Config.getReactionRole(), Discord);
                                 break;
 
                             case 'setchannel':
-                                DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                                readRrConfig();
+                                DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, Config.getGlobal()).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                Config.reload();
                                 break;
 
                             case 'setmsg':
-                                DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                                readRrConfig();
+                                DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, Config.getGlobal()).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                Config.reload();
                                 break;
 
                             case 'addrole':
-                                DiscordBot.commands.get('cfgrr-addRole').execute(message, args, config, rrConfig, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                                readRrConfig();
+                                DiscordBot.commands.get('cfgrr-addRole').execute(message, args, Config.getGlobal(), Config.getReactionRole(), DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                Config.reload();
                                 break;
 
                             case 'removerole':
-                                DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, config, rrConfig, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                                readRrConfig();
+                                DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, Config.getGlobal(), Config.getReactionRole(), DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                Config.reload();
                                 break;
 
                             default:
-                                DiscordBot.commands.get('cfg-reactionRole').execute(message, config, Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                DiscordBot.commands.get('cfg-reactionRole').execute(message, Config.getGlobal(), Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
                         }
 
                         break;
 
                     default: // If args[0] dont match with a registered command
-                        DiscordBot.commands.get('config').execute(message, config, Discord, DiscordBot);
+                        DiscordBot.commands.get('config').execute(message, Config.getGlobal(), Discord, DiscordBot);
                         break;
                 }
                 break;
@@ -316,10 +250,10 @@ DiscordBot.on('message', async(message) => {
  * Reaction Role giving and removing roles 
  */
 DiscordBot.on('messageReactionAdd', async(reaction, user) => {
-    await readRrConfig();
-    return await DiscordBot.commands.get('reactionRoleAdd').execute(reaction, user, rrConfig);
+    Config.reload();
+    return await DiscordBot.commands.get('reactionRoleAdd').execute(reaction, user, Config.getReactionRole());
 });
 DiscordBot.on('messageReactionRemove', async(reaction, user) => {
-    await readRrConfig();
-    return await DiscordBot.commands.get('reactionRoleRemove').execute(reaction, user, rrConfig);
+    Config.reload();
+    return await DiscordBot.commands.get('reactionRoleRemove').execute(reaction, user, Config.getReactionRole());
 });

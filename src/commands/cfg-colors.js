@@ -1,14 +1,13 @@
+import embedFormat from '../models/embedFormat'
 module.exports = {
     name: 'colors',
     description: `See all the colors I have.`,
     async execute(message, args, config, Discord) {
         
         if(args[1]!=undefined) 
-            return message.channel.send(`Use \`${config.prefix}config colors\` to run this command correctly`);
+            return message.channel.send(`Use \`${config.getGlobal().prefix}config colors\` to run this command correctly`);
         
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config.getGlobal(), Discord)
             .setTitle(`LeivaaDiscordJS Colors:`)
             .addFields(
                 {name: `WHITE`, value: `#FFFFFF`},

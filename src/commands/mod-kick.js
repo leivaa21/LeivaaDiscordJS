@@ -12,6 +12,6 @@ module.exports = {
             return message.channel.send(`<@${ message.author.id}> kicked ${ kicked.user.username }'s ass out of the server!`);
         }
         else 
-            return message.reply(`You should use \`${ config.prefix }kick {@username}\` to run this command correctly`);
+            return message.reply(`You should use \`${ config.getGlobal().prefix }kick {@username}\` to run this command correctly`);
     }
 }

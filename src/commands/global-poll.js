@@ -9,9 +9,9 @@ module.exports = {
 
         let pollTitle = args.slice(0).join(' ');
         if (!pollTitle)
-            return message.reply(`You should use \`${ config.prefix }poll {Tittle}\` to run this command correctly.`);
+            return message.reply(`You should use \`${ config.getGlobal().prefix }poll {Tittle}\` to run this command correctly.`);
             
-        let embed = embedFormat(config, Discord)
+        let embed = embedFormat(config.getGlobal(), Discord)
             .setTitle(pollTitle)
             .setDescription('Vote reacting this message!\n\n' +
                 `${tickEmoji} Vote for this!\n` +

@@ -6,21 +6,21 @@ module.exports = {
     async execute(message, config, Discord) {
         
         var color;
-        for(namecolor in config.colors){
-            if(config.colors[namecolor]==config.color) color = namecolor;
+        for(namecolor in config.getGlobal().colors){
+            if(config.getGlobal().colors[namecolor]==config.getGlobal().color) color = namecolor;
         }
 
         var channelId = undefined;
-        const channel = message.guild.channels.cache.find(ch => ch.id === config.welcomeChannel);
+        const channel = message.guild.channels.cache.find(ch => ch.id === config.getGlobal().welcomeChannel);
         if(channel != undefined) channelId = channel.id;
 
-        let embed = embedFormat(config, Discord)
+        let embed = embedFormat(config.getGlobal(), Discord)
             .setTitle(`LeivaaDiscordJS Configs:`)
             .addFields(
-                { name: `Prefix`, value: config.prefix},
-                { name: `MaxDeleting`, value: config.maxDeleting},
+                { name: `Prefix`, value: config.getGlobal().prefix},
+                { name: `MaxDeleting`, value: config.getGlobal().maxDeleting},
                 { name: `welcomeChannel`, value: channelId == undefined ? "undefined" : `<#${channelId}>` },
-                { name: `welcomeMsg`, value: config.welcomeMsg},
+                { name: `welcomeMsg`, value: config.getGlobal().welcomeMsg},
                 { name: `color`, value: color},
             )
             

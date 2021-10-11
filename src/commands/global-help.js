@@ -1,11 +1,11 @@
+import embedFormat from '../models/embedFormat'
+
 module.exports = {
     name: 'help',
     description: 'Show all my commands',
     async execute(message, config, Discord, DiscordBot) {
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed =embedFormat(config.getGlobal(), Discord)
             .setTitle(`LeivaaDiscordJS Commands:`)
             .addFields(
                 { name: `${config.prefix}ping`, value: `> Just response 🏓 pong! \n > **Usage**: \`${ config.prefix }ping\``},
@@ -18,7 +18,6 @@ module.exports = {
                 
                 
             )
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
         return message.channel.send(embed);
     }

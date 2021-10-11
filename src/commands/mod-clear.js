@@ -4,14 +4,14 @@ module.exports = {
     async execute(message, args, config) {
         if (!args[0] || isNaN(args[0] || args[0] < 1)) {
                 message.delete({ timeout : 3 * 1000 });
-            return message.reply(`You should \`${config.prefix}clear {Number between 0 and ${config.maxDeleting}}\` to run this command correctly`);
+            return message.reply(`You should \`${config.getGlobal().prefix}clear {Number between 0 and ${config.getGlobal().maxDeleting}}\` to run this command correctly`);
         }
-        else if (args[0] > config.maxDeleting) {
-            message.channel.send(`I can't remove more than \`${config.maxDeleting}\` messages.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
-            await message.channel.messages.fetch({ limit: ++config.maxDeleting })
+        else if (args[0] > config.getGlobal().maxDeleting) {
+            message.channel.send(`I can't remove more than \`${config.getGlobal().maxDeleting}\` messages.`).then(msg => msg.delete({ timeout: 3 * 1000 }));
+            await message.channel.messages.fetch({ limit: ++config.getGlobal().maxDeleting })
                 .then( async (messages) => {
                     await message.channel.bulkDelete(messages).catch(err => console.log(err));
-                    return message.channel.send(`Cleaned \`${--config.maxDeleting}\` messages!`).then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    return message.channel.send(`Cleaned \`${--config.getGlobal().maxDeleting}\` messages!`).then(msg => msg.delete({ timeout: 3 * 1000 }));
                 });
             
         }

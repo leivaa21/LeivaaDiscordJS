@@ -1,59 +1,58 @@
-import {replace} from 'replace-json-property'
 import embedFormat from '../models/embedFormat'
 
 module.exports = {
     name: 'adm-reactionRole',
     description: '',
-    async execute(message, config, rrConfig, Discord) {
+    async execute(message, config, Discord) {
         
-        const channel = message.guild.channels.cache.find(ch => ch.id === rrConfig.channel);
+        const channel = message.guild.channels.cache.find(ch => ch.id === config.getReactionRole().channel);
         if(channel == undefined) 
             return message.channel.send(`Reaction role channel is not setted!`);
         
-        if(rrConfig.title === "undefined") 
+        if(config.getReactionRole().title === "undefined") 
             return message.channel.send(`Reaction role title is not setted!`);
 
-        if(rrConfig.message === "undefined") 
+        if(config.getReactionRole().message === "undefined") 
             return message.channel.send(`Reaction role message is not setted!`);
 
-        if(rrConfig.nRoles == 0) 
+        if(config.getReactionRole().nRoles == 0) 
             return message.channel.send(`Reaction role embed has no roles added!`);
 
         let embed = embedFormat(config, Discord)
-            .setTitle(rrConfig.title)
-            .setDescription(`${rrConfig.message}`)
+            .setTitle(config.getReactionRole().title)
+            .setDescription(`${config.getReactionRole().message}`)
     
-        if(rrConfig.nRoles > 0){
+        if(config.getReactionRole().nRoles > 0){
             embed.addFields({ 
-                name: `React with ${rrConfig.rol1.emoji} for`, 
-                value: `<@&${rrConfig.rol1.id}>: ${rrConfig.rol1.description}`
+                name: `React with ${config.getReactionRole().rol1.emoji} for`, 
+                value: `<@&${config.getReactionRole().rol1.id}>: ${config.getReactionRole().rol1.description}`
                 });
         }
-        if(rrConfig.nRoles > 1){
+        if(config.getReactionRole().nRoles > 1){
             embed.addFields({ 
-                name: `React with ${rrConfig.rol2.emoji} for`, 
-                value: `<@&${rrConfig.rol2.id}>: ${rrConfig.rol2.description}`
+                name: `React with ${config.getReactionRole().rol2.emoji} for`, 
+                value: `<@&${config.getReactionRole().rol2.id}>: ${config.getReactionRole().rol2.description}`
                 });
         }
-        if(rrConfig.nRoles > 2){
+        if(config.getReactionRole().nRoles > 2){
             embed.addFields({ 
-                name: `React with ${rrConfig.rol3.emoji} for`, 
-                value: `<@&${rrConfig.rol3.id}>: ${rrConfig.rol3.description}`
+                name: `React with ${config.getReactionRole().rol3.emoji} for`, 
+                value: `<@&${config.getReactionRole().rol3.id}>: ${config.getReactionRole().rol3.description}`
                 });
         }    
     
         let messageEmbed = await channel.send(embed);
         
-        if(rrConfig.nRoles > 0) 
-            messageEmbed.react(rrConfig.rol1.emoji);
+        if(config.getReactionRole().nRoles > 0) 
+            messageEmbed.react(config.getReactionRole().rol1.emoji);
 
-        if(rrConfig.nRoles > 1) 
-            messageEmbed.react(rrConfig.rol2.emoji);
+        if(config.getReactionRole().nRoles > 1) 
+            messageEmbed.react(config.getReactionRole().rol2.emoji);
 
-        if(rrConfig.nRoles > 2) 
-            messageEmbed.react(rrConfig.rol3.emoji);
+        if(config.getReactionRole().nRoles > 2) 
+            messageEmbed.react(config.getReactionRole().rol3.emoji);
 
-        replace(__dirname + "/../configs/rrConfig.json", "idMsg", messageEmbed.id);
+        config.applyChanges("reactionRole", "idMsg", messageEmbed.id);
 
     }
 }

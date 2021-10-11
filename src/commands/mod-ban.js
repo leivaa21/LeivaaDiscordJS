@@ -6,7 +6,7 @@ module.exports = {
         let banReason = args.slice(2).join(' ');
 
         if (!member || !banReason) {
-            return message.reply(`You should use \`${ config.prefix }ban {@username} {Reason}\` to run this command correctly`);
+            return message.reply(`You should use \`${ config.getGlobal().prefix }ban {@username} {Reason}\` to run this command correctly`);
         } 
         else {
             const banned = await member.ban({ days: 7, reason: banReason });
