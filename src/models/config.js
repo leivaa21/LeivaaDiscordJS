@@ -1,7 +1,9 @@
 const pathGlobal = __dirname + '/../configs/global.json';
 const pathReactionRole = __dirname + '/../configs/reactionRole.json';
 
+import {replace} from 'replace-json-property'
 import fs from 'fs'
+import { SystemChannelFlags } from 'discord.js';
 
 class Config{
     
@@ -50,14 +52,14 @@ class Config{
             "description":""
         }
     };
-    async loadGlobalJSON(callback){
+    static async loadGlobalJSON(callback){
         await fs.readFile(pathGlobal, 'utf-8', (err, jsonString) => {
             if(err) return console.log(err); 
             this.global = JSON.parse(jsonString);
         })
         if(callback != undefined) callback();
     }
-    async loadReactionRoleJSON(callback){
+    static async loadReactionRoleJSON(callback){
         await fs.readFile(pathReactionRole, 'utf-8', (err, jsonString) => {
             if(err) return console.log(err); 
             this.reactionRole = JSON.parse(jsonString);
@@ -65,12 +67,12 @@ class Config{
         if(callback != undefined) callback();
     }
     constructor(callback1, callback2){
-        this.loadGlobalJSON(callback1);
-        this.loadReactionRoleJSON(callback2);
+        Config.loadGlobalJSON(callback1);
+        Config.loadReactionRoleJSON(callback2);
     }
     static reload(){
-        this.loadGlobalJSON();
-        this.loadReactionRoleJSON();
+        Config.loadGlobalJSON(() => {});
+        Config.loadReactionRoleJSON(() => {});
     }
     static getGlobal(){
         return this.global;

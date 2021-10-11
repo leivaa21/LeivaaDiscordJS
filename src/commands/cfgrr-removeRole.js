@@ -1,14 +1,12 @@
-import {replace} from 'replace-json-property'
-
 module.exports = {    
     name: 'cfgrr-removeRole',
     description: `Remove a role to the reaction role embed.`,
-    async execute(message, args, config, rrConfig) {
+    async execute(message, args, config) {
         
         if(!args[2]) 
-            return message.channel.send(`Use \`${config.prefix}config reactionRole removeRole {rol_name/@rol}\` to run this command correctly`);
+            return message.channel.send(`Use \`${config.getGlobal().prefix}config reactionRole removeRole {rol_name/@rol}\` to run this command correctly`);
         
-        if(rrConfig.nRoles == 0)
+        if(config.getReactionRole().nRoles == 0)
             return message.channel.send(`No roles added to the reaction role embed!`);
         
         var role;
@@ -26,40 +24,40 @@ module.exports = {
             "description": ""
         }
         
-        if(rrConfig.nRoles == 1){
-            if(role.id == rrConfig.rol1.id)
-                replace(__dirname + "/../configs/rrConfig.json", "rol1", rol);
+        if(config.getReactionRole().nRoles == 1){
+            if(role.id == config.getReactionRole().rol1.id)
+                config.applyChanges("reactionRole", "rol1", rol);
             else 
                 return message.channel.send(`${role} is \`not currently added\` to the reaction role embed!!`);
         }
         
-        if(rrConfig.nRoles == 2){
-            if(role.id == rrConfig.rol1.id){
-                replace(__dirname + "/../configs/rrConfig.json", "rol1", rrConfig.rol2);
-                replace(__dirname + "/../configs/rrConfig.json", "rol2", rol);
+        if(config.getReactionRole().nRoles == 2){
+            if(role.id == config.getReactionRole().rol1.id){
+                config.applyChanges("reactionRole", "rol1", config.getReactionRole().rol2);
+                config.applyChanges("reactionRole", "rol2", rol);
             }
-            else if(role.id == rrConfig.rol2.id)
-                replace(__dirname + "/../configs/rrConfig.json", "rol2", rol);
-            if(role.id != rrConfig.rol1.id && role.id != rrConfig.rol2.id ) 
+            else if(role.id == config.getReactionRole().rol2.id)
+                config.applyChanges("reactionRole", "rol2", rol);
+            if(role.id != rrConfig.rol1.id && role.id != config.getReactionRole().rol2.id ) 
                 return message.channel.send(`${role} is \`not currently added\` to the reaction role embed!!`);
             
         }
-        if(rrConfig.nRoles == 3){
-            if(role.id == rrConfig.rol1.id){
-                replace(__dirname + "/../configs/rrConfig.json", "rol1", rrConfig.rol2);
-                replace(__dirname + "/../configs/rrConfig.json", "rol2", rrConfig.rol3);
-                replace(__dirname + "/../configs/rrConfig.json", "rol3", rol);
+        if(config.getReactionRole().nRoles == 3){
+            if(role.id == config.getReactionRole().rol1.id){
+                config.applyChanges("reactionRole", "rol1", config.getReactionRole().rol2);
+                config.applyChanges("reactionRole", "rol2", config.getReactionRole().rol3);
+                config.applyChanges("reactionRole", "rol3", rol);
             }
-            if(role.id == rrConfig.rol2.id){
-                replace(__dirname + "/../configs/rrConfig.json", "rol2", rrConfig.rol3);
-                replace(__dirname + "/../configs/rrConfig.json", "rol3", rol);
+            if(role.id == config.getReactionRole().rol2.id){
+                config.applyChanges("reactionRole", "rol2", config.getReactionRole().rol3);
+                config.applyChanges("reactionRole", "rol3", rol);
             }
-            if(role.id == rrConfig.rol3.id)
-                replace(__dirname + "/../configs/rrConfig.json", "rol3", rol);
-            if(role.id != rrConfig.rol1.id && role.id != rrConfig.rol2.id && role.id != rrConfig.rol3.id ) 
+            if(role.id == config.getReactionRole().rol3.id)
+                config.applyChanges("reactionRole", "rol3", rol);
+            if(role.id != config.getReactionRole().rol1.id && role.id != config.getReactionRole().rol2.id && role.id != config.getReactionRole().rol3.id ) 
                 return message.channel.send(`${role} is \`not currently added\` to the reaction role embed!!`);
         }
-        replace(__dirname + "/../configs/rrConfig.json", "nRoles", --rrConfig.nRoles);
-        return message.channel.send(`Role ${role} succesfuly removed! Now I have \`${rrConfig.nRoles == 0 ? "no one :C" : rrConfig.nRoles}\` saved for reactionRole embed!`);
+        config.applyChanges("reactionRole", "nRoles", --config.getReactionRole().nRoles);
+        return message.channel.send(`Role ${role} succesfuly removed! Now I have \`${--config.getReactionRole().nRoles == 0 ? "no one :C" : --config.getReactionRole().nRoles}\` saved for reactionRole embed!`);
     } 
 }

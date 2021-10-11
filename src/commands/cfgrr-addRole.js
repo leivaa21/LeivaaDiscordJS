@@ -4,12 +4,12 @@ import emojiRegex from 'emoji-regex'
 module.exports = {    
     name: 'cfgrr-addRole',
     description: `Add a role to the reaction role embed.`,
-    async execute(message, args, config, rrConfig) {
+    async execute(message, args, config) {
         
-        if(rrConfig.nRoles == 3)
+        if(config.getReactionRole().nRoles == 3)
             return message.channel.send(`Already have \`3 roles added\`, sorry but for now I can not save more roles`);
         if(!args[4])
-            return message.channel.send(`Use \`${config.prefix}config reactionRole addRole {rol_name/@rol} {EmojiForReacting} {Description of role}\` to run this command correctly`);
+            return message.channel.send(`Use \`${config.getGlobal().prefix}config reactionRole addRole {rol_name/@rol} {EmojiForReacting} {Description of role}\` to run this command correctly`);
         
         var role;
         const new_role = args[2];
@@ -35,20 +35,20 @@ module.exports = {
             "description": descripcion
         }
 
-        if(rrConfig.nRoles == 0)
-            replace(__dirname + "/../configs/rrConfig.json", "rol1", rol);
+        if(config.getReactionRole().nRoles == 0)
+            config.applyChanges("reactionRole", "rol1", rol);
 
-        if(rrConfig.nRoles == 1){
-            if(rol.id == rrConfig.rol1.id || rol.emoji == rrConfig.rol1.emoji ) 
+        if(config.getReactionRole().nRoles == 1){
+            if(rol.id == config.getReactionRole().rol1.id || rol.emoji == config.getReactionRole().rol1.emoji ) 
                 return message.channel.send(`You can't neither repeated rol or multiples roles with the same emoji !!`);
-            replace(__dirname + "/../configs/rrConfig.json", "rol2", rol);
+                config.applyChanges("reactionRole", "rol2", rol);
         }
-        if(rrConfig.nRoles == 2){
-            if(rol.id == rrConfig.rol1.id || rol.emoji == rrConfig.rol1.emoji || rol.id == rrConfig.rol2.id || rol.emoji == rrConfig.rol2.emoji) 
+        if(config.getReactionRole().nRoles == 2){
+            if(rol.id == config.getReactionRole().rol1.id || rol.emoji == config.getReactionRole().rol1.emoji || rol.id == config.getReactionRole().rol2.id || rol.emoji == config.getReactionRole().rol2.emoji) 
                 return message.channel.send(`You can't neither repeated rol or multiples roles with the same emoji !!`);
-            replace(__dirname + "/../configs/rrConfig.json", "rol3", rol);
+                config.applyChanges("reactionRole", "rol3", rol);
         }
-        replace(__dirname + "/../configs/rrConfig.json", "nRoles", ++rrConfig.nRoles);
-        return message.channel.send(`Role ${role} succesfuly added! Now I have \`${rrConfig.nRoles} saved\` for reactionRole embed YAY!`);
+        config.applyChanges("reactionRole", "nRoles", ++config.getReactionRole().nRoles);
+        return message.channel.send(`Role ${role} succesfuly added! Now I have \`${config.getReactionRole().nRoles} saved\` for reactionRole embed YAY!`);
     } 
 }

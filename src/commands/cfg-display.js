@@ -6,6 +6,7 @@ module.exports = {
     async execute(message, config, Discord) {
         
         var color;
+        let namecolor;
         for(namecolor in config.getGlobal().colors){
             if(config.getGlobal().colors[namecolor]==config.getGlobal().color) color = namecolor;
         }
