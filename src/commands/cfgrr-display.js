@@ -1,3 +1,4 @@
+import embedFormat from '../models/embedFormat'
 module.exports = {
     name: 'cfgrr-display',
     description: 'Shows all my actual reaction role configs.',
@@ -8,9 +9,7 @@ module.exports = {
         if(channel != undefined) channelId = channel.id;
 
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config, Discord)
             .setTitle(`LeivaaDiscordJS ReactionRole Configs:`)
             .addFields(
                 { name: `Active`, value: rrConfig.idMsg != "undefined" ? "Yes" : "No"},
@@ -18,7 +17,6 @@ module.exports = {
                 { name: `Message`, value: rrConfig.message},
                 { name: `Channel`, value: channelId == undefined ? "undefined" : `<#${channelId}>` },
                 )
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
 
                 

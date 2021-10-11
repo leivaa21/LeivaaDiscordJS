@@ -1,11 +1,10 @@
+import embedFormat from '../models/embedFormat';
 module.exports = {
     name: 'config',
     description: 'Shows all my configs options.',
     async execute(message, config, Discord, DiscordBot) {
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config, Discord)
             .setTitle(`LeivaaDiscordJS Configs Commands:`)
             .addFields(
                 { name: `${config.prefix}config loadDefaults`, value: `> ${DiscordBot.commands.get('loadDefaults').description}\n > **Usage**: \`${config.prefix}config loadDefaults\``},
@@ -18,7 +17,6 @@ module.exports = {
                 { name: `${config.prefix}config welcomeMsg`, value: `> ${DiscordBot.commands.get('welcomeMsg').description}\n > **Usage**: \`${config.prefix}config welcomeMsg {new_msg}\``},
                 { name: `${config.prefix}config reactionRole`, value: `> ${DiscordBot.commands.get('cfg-reactionRole').description}\n > **Usage**: \`${config.prefix}config reactionRole\``},
             )
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
         message.channel.send(embed);
     }

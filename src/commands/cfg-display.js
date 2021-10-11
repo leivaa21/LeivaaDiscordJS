@@ -1,3 +1,5 @@
+import embedFormat from '../models/embedFormat'
+
 module.exports = {
     name: 'cfg-display',
     description: 'Shows all my actual configs.',
@@ -12,9 +14,7 @@ module.exports = {
         const channel = message.guild.channels.cache.find(ch => ch.id === config.welcomeChannel);
         if(channel != undefined) channelId = channel.id;
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config, Discord)
             .setTitle(`LeivaaDiscordJS Configs:`)
             .addFields(
                 { name: `Prefix`, value: config.prefix},
@@ -23,8 +23,7 @@ module.exports = {
                 { name: `welcomeMsg`, value: config.welcomeMsg},
                 { name: `color`, value: color},
             )
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
-
+            
         return message.channel.send(embed);
     }
 }

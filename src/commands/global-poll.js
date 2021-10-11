@@ -1,3 +1,4 @@
+import embedFormat from '../models/embedFormat'
 module.exports = {
     name: 'poll',
     description: `Creates a Yes/No Poll!`,
@@ -10,8 +11,7 @@ module.exports = {
         if (!pollTitle)
             return message.reply(`You should use \`${ config.prefix }poll {Tittle}\` to run this command correctly.`);
             
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
+        let embed = embedFormat(config, Discord)
             .setTitle(pollTitle)
             .setDescription('Vote reacting this message!\n\n' +
                 `${tickEmoji} Vote for this!\n` +

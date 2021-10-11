@@ -1,11 +1,10 @@
+import embedFormat from '../models/embedFormat'
 module.exports = {
     name: 'cfg-reactionRole',
     description: 'Shows all reaction role configs options.',
     async execute(message, config, Discord, DiscordBot) {
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config, Discord)
             .setTitle(`LeivaaDiscordJS ReactionRole Configs Commands:`)
             .addFields(
                 { name: `${config.prefix}config reactionRole display`, value: `> ${DiscordBot.commands.get('cfgrr-display').description}\n > **Usage**: \`${config.prefix}config reactionRole display\``},
@@ -15,7 +14,6 @@ module.exports = {
                 { name: `${config.prefix}config reactionRole addRole`, value: `> ${DiscordBot.commands.get('cfgrr-addRole').description}\n > **Usage**: \`${config.prefix}config reactionRole addRole {rol_name/@rol} {EmojiForReacting} {Description of role}\``},
                 { name: `${config.prefix}config reactionRole removeRole`, value: `> ${DiscordBot.commands.get('cfgrr-removeRole').description}\n > **Usage**: \`${config.prefix}config reactionRole removeRole {rol_name/@rol}\``},
             )
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
 
         return message.channel.send(embed);
     }

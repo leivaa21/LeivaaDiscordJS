@@ -1,4 +1,5 @@
 import {replace} from 'replace-json-property'
+import embedFormat from '../models/embedFormat'
 
 module.exports = {
     name: 'adm-reactionRole',
@@ -18,12 +19,9 @@ module.exports = {
         if(rrConfig.nRoles == 0) 
             return message.channel.send(`Reaction role embed has no roles added!`);
 
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.color)
-            .setAuthor(config.botName,config.botLogo)
+        let embed = embedFormat(config, Discord)
             .setTitle(rrConfig.title)
             .setDescription(`${rrConfig.message}`)
-            .setFooter('Bot developed by Leivaa - https://github.com/leivaa21', config.leivaaLogo);
     
         if(rrConfig.nRoles > 0){
             embed.addFields({ 
