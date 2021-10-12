@@ -5,7 +5,7 @@ import {} from 'dotenv/config'
 import Discord from 'discord.js'
 import fs from 'fs'
 import Config from './models/config'
-
+import loadCommands from './utils/loadCommands'
 
 
 
@@ -13,7 +13,7 @@ import Config from './models/config'
 /**
  * Load configs and display on cmd the actual configs
  */
-const config = new Config(() => {
+new Config(() => {
     console.log("[\x1b[33m LeivaaDiscordJS\x1b[0m ]\n"
     +"\x1b[36m| > Config loaded correctly\x1b[0m");
 }, () => {
@@ -36,14 +36,7 @@ DiscordBot.on('ready', () => {
  * the commands of ./commands.
  */
 DiscordBot.commands = new Discord.Collection();
-
-const CommandFiles = fs.readdirSync('./src/commands/').filter(file => file.endsWith('.js'));
-let countCommands = 0;
-for (const file of CommandFiles) {
-    const command = require(`./commands/${file}`);
-    DiscordBot.commands.set(command.name, command);
-    countCommands ++;
-}
+let countCommands = loadCommands(DiscordBot);
 console.log('[\x1b[33m LeivaaDiscordJS\x1b[0m ] ' + '\x1b[33m' + countCommands +'\x1b[0m commands founded and loaded.');
 
 
