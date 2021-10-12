@@ -1,71 +1,17 @@
 const pathGlobal = __dirname + '/../configs/global.json';
+const pathGlobalDefaults = __dirname + '/../configs/globalDefaults.json';
 const pathReactionRole = __dirname + '/../configs/reactionRole.json';
+const pathReactionRoleDefaults = __dirname + '/../configs/reactionRoleDefaults.json';
 
 import {replace} from 'replace-json-property'
 import fs from 'fs'
-import { SystemChannelFlags } from 'discord.js';
 
 class Config{
     
-    static global =  {
-        "prefix": "!",
-        "welcomeChannel": "undefined",
-        "welcomeMsg":"undefined",
-        "maxDeleting": 20,
-        "botLogo": "https://i.imgur.com/sNCtn86.png",
-        "botName": "LeivaaDiscordJS",
-        "leivaaLogo": "https://i.imgur.com/dZWwv1R.png",
-        "color": "#FFFFFF",
-        "colors": {
-            "WHITE": "#FFFFFF",
-            "AQUA": "#1ABC9C",
-            "PINK": "#E91E63",
-            "GREEN": "#2ECC71",
-            "GOLD": "#F1C40F",
-            "BLUE": "#3498DB",
-            "ORANGE": "#E67E22",
-            "PURPLE": "#9B59B6",
-            "RED": "#E74C3C",
-            "YELLOW": "#FFFF00",
-        }
-    };
+    static global =  {};
 
-    static reactionRole = {
-        "idMsg":"undefined",
-        "title": "undefined",
-        "channel": "undefined",
-        "message": "undefined",
-        "nRoles": 0,
-        "rol1":{
-            "id":"",
-            "emoji":"",
-            "description":""
-        },
-        "rol2":{
-            "id":"",
-            "emoji":"",
-            "description":""
-        },
-        "rol3":{
-            "id":"",
-            "emoji":"",
-            "description":""
-        }
-    };
-    static async loadGlobalJSON(callback){
-        await fs.readFile(pathGlobal, 'utf-8', (err, jsonString) => {
-            if(err) return console.log(err); 
-            this.global = JSON.parse(jsonString);
-        })
-        if(callback != undefined) callback();
-    }
-    static async loadReactionRoleJSON(callback){
-        await fs.readFile(pathReactionRole, 'utf-8', (err, jsonString) => {
-            if(err) return console.log(err); 
-            this.reactionRole = JSON.parse(jsonString);
-        })
-        if(callback != undefined) callback();
-    }
+    static reactionRole = {};
+    
     constructor(callback1, callback2){
         Config.loadGlobalJSON(callback1);
         Config.loadReactionRoleJSON(callback2);
@@ -80,9 +26,48 @@ class Config{
     static getReactionRole(){
         return this.reactionRole;
     }
+    static async loadGlobalJSON(callback){
+        await fs.readFile(pathGlobal, 'utf-8', (err, jsonString) => {
+            if(err) return console.log(err); 
+            this.global = JSON.parse(jsonString);
+        })
+        if(callback != undefined) callback();
+    }
+    static async loadReactionRoleJSON(callback){
+        await fs.readFile(pathReactionRole, 'utf-8', (err, jsonString) => {
+            if(err) return console.log(err); 
+            this.reactionRole = JSON.parse(jsonString);
+        })
+        if(callback != undefined) callback();
+    }
     static applyChanges(configFile,property,new_value){
         replace(__dirname + "/../configs/" + configFile + ".json", property, new_value);
     }
+    static async writeFile(configFile, object){
+        const data = JSON.stringify(object);
+        await fs.writeFile(__dirname + "/../configs/" + configFile + ".json", data, (err) => {
+            if (err) {
+                throw err;
+            }
+        });
+    }
+    static async loadDefaults(option){
+        if(option == "global" || option == "all"){
+            await fs.readFile(pathGlobalDefaults, 'utf-8', (err, jsonString) => {
+                if(err) throw err; 
+                this.global = JSON.parse(jsonString);
+                Config.writeFile("global", Config.getGlobal());
+            })
+        }
+        if(option == "reactionRole" || option == "all"){
+            await fs.readFile(pathReactionRoleDefaults, 'utf-8', (err, jsonString) => {
+                if(err) throw err; 
+                this.global = JSON.parse(jsonString);
+                Config.writeFile("reactionRole", Config.getReactionRole());
+            })
+        }
+    }
+    
 
 }
 

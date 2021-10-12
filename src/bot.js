@@ -158,70 +158,70 @@ DiscordBot.on('message', async(message) => {
                         break;
 
                     case 'loaddefaults':
-                        DiscordBot.commands.get('loadDefaults').execute(message, args, Config) //FIX THIS LATTER WITH CONFIG METHOD = RESETCONFIG
+                        await DiscordBot.commands.get('loadDefaults').execute(message, args, Config) //FIX THIS LATTER WITH CONFIG METHOD = RESETCONFIG
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
 
                     case 'prefix':
-                        DiscordBot.commands.get('prefix').execute(message, args, Config)
+                        await DiscordBot.commands.get('prefix').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
 
                     case 'maxdeleting':
-                        DiscordBot.commands.get('maxDeleting').execute(message, args, Config)
+                        await DiscordBot.commands.get('maxDeleting').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
 
                     case 'colors':
-                        DiscordBot.commands.get('colors').execute(message, args, Config, Discord)
+                        await DiscordBot.commands.get('colors').execute(message, args, Config, Discord)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
 
                     case 'color':
-                        DiscordBot.commands.get('color').execute(message, args, Config)
+                        await DiscordBot.commands.get('color').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
                         break;
 
                     case 'welcomechannel':
-                        DiscordBot.commands.get('welcomeChannel').execute(message, args, Config)
+                        await DiscordBot.commands.get('welcomeChannel').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
 
                     case 'welcomemsg':
-                        DiscordBot.commands.get('welcomeMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
+                        await DiscordBot.commands.get('welcomeMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
                         break;
 
                     case 'reactionrole':
                         /**
                          * All the reaction role config command options
                          */
-                        if (args[1] == undefined) DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot);
+                        if (args[1] == undefined)  DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot);
                         else switch(args[1].toLowerCase()){
 
                             case 'display':
                                 DiscordBot.commands.get('cfgrr-display').execute(message, Config, Discord);
                                 break;
                             case 'setTitle':
-                                    DiscordBot.commands.get('cfgrr-seTitle').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
-                                    break;
+                                await DiscordBot.commands.get('cfgrr-seTitle').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                break;
                             case 'setchannel':
-                                DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                await DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
 
                             case 'setmsg':
-                                DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                await DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
 
                             case 'addrole':
-                                DiscordBot.commands.get('cfgrr-addRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                await DiscordBot.commands.get('cfgrr-addRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
 
                             case 'removerole':
-                                DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                await DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
 
                             default:
-                                DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                                await DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
                         }
                         

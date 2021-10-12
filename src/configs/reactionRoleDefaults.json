@@ -1,0 +1,22 @@
+{
+  "idMsg": "undefined",
+  "title": "undefined",
+  "channel": "undefined",
+  "message": "undefined",
+  "nRoles": 0,
+  "rol1": {
+    "id": "",
+    "emoji": "",
+    "description": ""
+  },
+  "rol2": {
+    "id": "",
+    "emoji": "",
+    "description": ""
+  },
+  "rol3": {
+    "id": "",
+    "emoji": "",
+    "description": ""
+  }
+}
