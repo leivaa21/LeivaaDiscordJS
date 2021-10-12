@@ -1,7 +1,9 @@
 const pathGlobal = __dirname + '/../configs/global.json';
 const pathGlobalDefaults = __dirname + '/../configs/globalDefaults.json';
+const pathGlobalSaved = __dirname + '/../configs/global-saved.json';
 const pathReactionRole = __dirname + '/../configs/reactionRole.json';
 const pathReactionRoleDefaults = __dirname + '/../configs/reactionRoleDefaults.json';
+const pathReactionRoleSaved = __dirname + '/../configs/reactionRole-saved.json';
 
 import {replace} from 'replace-json-property'
 import fs from 'fs'
@@ -67,7 +69,30 @@ class Config{
             })
         }
     }
-    
+    static async saveConfigs(option){
+        if(option == "global" || option == "all"){
+            Config.writeFile("global-saved", Config.getGlobal());
+        }
+        if(option == "reactionRole" || option == "all"){
+            Config.writeFile("reactionRole-saved", Config.getReactionRole());
+        }
+    }
+    static async loadSaved(option){
+        if(option == "global" || option == "all"){
+            await fs.readFile(pathGlobalSaved, 'utf-8', (err, jsonString) => {
+                if(err) throw err; 
+                this.global = JSON.parse(jsonString);
+                Config.writeFile("global", Config.getGlobal());
+            })
+        }
+        if(option == "reactionRole" || option == "all"){
+            await fs.readFile(pathReactionRoleSaved, 'utf-8', (err, jsonString) => {
+                if(err) throw err; 
+                this.global = JSON.parse(jsonString);
+                Config.writeFile("reactionRole", Config.getReactionRole());
+            })
+        }
+    }
 
 }
 

@@ -127,7 +127,27 @@ DiscordBot.on('message', async(message) => {
             /**
              * Admin Commands (marked as adm- on ./commands)
              */
-            case 'reactionRole':
+            case 'saveconfig':
+                if (!message.member.hasPermission(['ADMINISTRATOR'])){
+                    message.reply(`To run this command you need more power \`(Just for admins :c)\``)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+                DiscordBot.commands.get('adm-saveConfig').execute(message, args, Config)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                Config.reload();
+                break;
+            case 'loadconfig':
+                if (!message.member.hasPermission(['ADMINISTRATOR'])){
+                    message.reply(`To run this command you need more power \`(Just for admins :c)\``)
+                        .then(msg => msg.delete({ timeout: 3 * 1000 }));
+                    break;
+                }
+                DiscordBot.commands.get('adm-loadConfig').execute(message, args, Config)
+                    .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
+                Config.reload();
+                break;
+            case 'reactionrole':
 
                 if (!message.member.hasPermission(['ADMINISTRATOR'])){
                     message.reply(`To run this command you need more power \`(Just for admins :c)\``)
