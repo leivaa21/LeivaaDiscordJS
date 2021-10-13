@@ -3,7 +3,6 @@
  */
 import {} from 'dotenv/config'
 import Discord from 'discord.js'
-import fs from 'fs'
 import Config from './models/config'
 import loadCommands from './utils/loadCommands'
 
