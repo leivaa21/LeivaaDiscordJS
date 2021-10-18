@@ -217,60 +217,106 @@ DiscordBot.on('message', async(message) => {
             /**
              * Here start all the configs commands
              * @see class config
-             * @see commands /commands/cfg- && /commands/cfgrr-
+             * @see commands /commands/cfg-*
              */
             case 'config': 
 
-                /**
-                 * All the config command options
-                 */
+
                 //Check if user is admin
                 if (!message.member.hasPermission(['ADMINISTRATOR'])){
                     message.reply(`To run this command you need more power \`(Just for admins :c)\``)
                         .then(msg => msg.delete({ timeout: 3 * 1000 }));
                     break;
                 }
+                /**
+                 * If no sub command received, display the config help command
+                 */
                 if(args[0] == undefined) return DiscordBot.commands.get('config').execute(message, Config, Discord, DiscordBot);
+                
+                //LowerCase to the sub command so its not case sensitive
                 switch(args[0].toLowerCase()){
 
+                    /**
+                     * Displays the actual config loaded (Saved on /configs/global.json)
+                     * @see json /configs/global.json
+                     * @see command /commands/cfg-display.js
+                     */
                     case 'display':
                         DiscordBot.commands.get('cfg-display').execute(message, Config, Discord);
                         break;
-
+                    /**
+                     * Set the actual configs to defaults (saved on /configs/globalDefaults.json & reactionRoleDefaults.json)
+                     * @see json /config/globalDefaults.json
+                     * @see json /config/reactionRoleDefaults.json
+                     * @see command /commands/cfg-loadDefaults.js
+                     */
                     case 'loaddefaults':
                         await DiscordBot.commands.get('loadDefaults').execute(message, args, Config) //FIX THIS LATTER WITH CONFIG METHOD = RESETCONFIG
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
-
+                    /**
+                     * Change the actual prefix for the commands
+                     * @see command /commands/cfg-prefix.js
+                     * @see json-property /configs/global.json - "prefix"
+                     */
                     case 'prefix':
                         await DiscordBot.commands.get('prefix').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
-
+                    /**
+                     * Change the actual max deleting setting for clear command
+                     * @see command /commands/cfg-maxDeleting.js
+                     * @see command /commands/mod-clear.js
+                     * @see json-property /configs/global.json - "maxDeleting"
+                     */
                     case 'maxdeleting':
                         await DiscordBot.commands.get('maxDeleting').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
-
+                    /**
+                     * Display all the colors saved on config that can be used
+                     * @see command /commands/cfg-colors.js
+                     * @see json-property /configs/global.json - "colors":{}
+                     */
                     case 'colors':
                         await DiscordBot.commands.get('colors').execute(message, args, Config, Discord)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
-
+                    /**
+                     * Change the actual color for embeds
+                     * @see command /commands/cfg-color.js
+                     * @see json-property /configs/global.json - "color"
+                     */
                     case 'color':
                         await DiscordBot.commands.get('color').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
                         break;
-
+                    /**
+                     * Change the actual channel for welcome messages
+                     * @see command /commands/cfg-welcomeChannel.js
+                     * @see command /commands/auto-welcome.js
+                     * @see json-property /configs/global.json - "welcomeChannel"
+                     */
                     case 'welcomechannel':
                         await DiscordBot.commands.get('welcomeChannel').execute(message, args, Config)
                             .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                         break;
-
+                    /**
+                     * Change the actual message for welcome messages
+                     * @see command /commands/cfg-welcomeMsg.js
+                     * @see command /commands/auto-welcome.js
+                     * @see json-property /configs/global.json - "welcomeMsg"
+                     */
                     case 'welcomemsg':
-                        await DiscordBot.commands.get('welcomeMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
+                        await DiscordBot.commands.get('welcomeMsg').execute(message, args, Config)
+                            .then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined}); 
                         break;
-
+                    
+                    /**
+                     * Here start the reactionRole focused configs commands
+                     * @see class config
+                     * @see commands /commands/cfgrr-*
+                     */
                     case 'reactionrole':
                         /**
                          * All the reaction role config command options
