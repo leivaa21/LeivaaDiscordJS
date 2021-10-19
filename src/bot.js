@@ -230,6 +230,7 @@ DiscordBot.on('message', async(message) => {
                 }
                 /**
                  * If no sub command received, display the config help command
+                 * @see command /commands/adm-config.js
                  */
                 if(args[0] == undefined) return DiscordBot.commands.get('config').execute(message, Config, Discord, DiscordBot);
                 
@@ -319,47 +320,91 @@ DiscordBot.on('message', async(message) => {
                      */
                     case 'reactionrole':
                         /**
-                         * All the reaction role config command options
+                         * Here start all the reaction role configs commands
+                         * @see class config
+                         * @see commands /commands/cfgrr-*
+                         */
+
+                        /**
+                         * If it has no sub-command, display the reactionRole help embed
+                         * @see command /commands/cfg-reactionRole.js
                          */
                         if (args[1] == undefined)  DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot);
+                        // Lower case to the sub-command so its not case sensitive
                         else switch(args[1].toLowerCase()){
-
+                            /**
+                             * Displays the actual reaction role config loaded (Saved on /configs/reactionRole.json)
+                             * @see json /configs/reactionRole.json
+                             * @see command /commands/cfgrr-display.js
+                             */
                             case 'display':
                                 DiscordBot.commands.get('cfgrr-display').execute(message, Config, Discord);
                                 break;
+                            /**
+                             * Change the actual title for the reaction role embed
+                             * @see command /commands/cfgrr-setTitle.js
+                             * @see json-property /configs/reactionRole.json - "title"
+                             */
                             case 'setTitle':
                                 await DiscordBot.commands.get('cfgrr-seTitle').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
+                            /**
+                             * Change the actual channel for the reaction role embed - saves the ID of the channel
+                             * @see command /commands/cfgrr-setChannel.js
+                             * @see json-property /configs/reactionRole.json - "channel"
+                             */
                             case 'setchannel':
                                 await DiscordBot.commands.get('cfgrr-setChannel').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
-
+                            /**
+                             * Change the actual message for the reaction role embed 
+                             * @see command /commands/cfgrr-setMsg.js
+                             * @see json-property /configs/reactionRole.json - "message"
+                             */
                             case 'setmsg':
                                 await DiscordBot.commands.get('cfgrr-setMsg').execute(message, args, Config).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
-
+                            /**
+                             * Add a role to the reaction role embed
+                             * @see command /commands/cfgrr-addRole.js
+                             * @see json-property /configs/reactionRole.json - "rol1/2/3"
+                             */
                             case 'addrole':
                                 await DiscordBot.commands.get('cfgrr-addRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
-
+                            /**
+                             * Remove a role to the reaction role embed
+                             * @see command /commands/cfgrr-addRole.js
+                             * @see json-property /configs/reactionRole.json - "rol1/2/3"
+                             */
                             case 'removerole':
                                 await DiscordBot.commands.get('cfgrr-removeRole').execute(message, args, Config, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
-
+                            /**
+                             * If the sub-command is invalid, display the reactionRole help embed (just as it has no sub command)
+                             * @see command /commands/cfg-reactionRole.js
+                             */
                             default:
                                 await DiscordBot.commands.get('cfg-reactionRole').execute(message, Config, Discord, DiscordBot).then(msg => {msg ? msg.delete({ timeout: 3 * 1000 }): undefined});
                                 break;
                         }
                         
                         break;
-
-                    default: // If args[0] dont match with a registered command
+                    /**
+                     * If the sub-command is invalid, display the help embed (just as it has no sub command)
+                     * @see command /commands/adm-config.js
+                     */
+                    default:
                         DiscordBot.commands.get('config').execute(message, Config, Discord, DiscordBot);
                         break;
+                /************************************************************/
                 }
                 Config.reload();
                 break;
         }
+        /**
+         * If the command isnt clear (for safer working) clear the command message
+         */
         if ( command != 'clear' ) 
             message.delete({ timeout: 3 * 1000 });
         
