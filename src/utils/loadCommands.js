@@ -5,7 +5,7 @@ function loadCommands(DiscordBot) {
     const CommandFiles = fs.readdirSync('./src/commands/')
         .filter(file => file.endsWith('.js'));
     for (const file of CommandFiles) {
-        const command = require(`../commands/${file}`);
+        const command = require(`${__dirname}/../commands/${file}`);
         DiscordBot.commands.set(command.name, command);
         count ++;
     }
